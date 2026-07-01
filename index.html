@@ -529,19 +529,14 @@ textarea{resize:vertical;min-height:52px}
     </div>
     <div style="margin:8px 0;padding:8px 10px;background:#f9f9f7;border-radius:6px;border:1px dashed #ddd">
       <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;font-weight:600">
-        <input type="checkbox" id="insp_ck" style="width:auto" onchange="updateDestNote()"/>
+        <input type="checkbox" id="insp_ck" style="width:auto" onchange="updateDestNote(); calcTotal();"/>
         Inclure la visite d'inspection dans l'offre
       </label>
-      <div id="insp_prix_row" style="display:none;margin-top:6px">
-        <label style="font-size:12px;color:#666">Prix visite d'inspection (€ HT)</label>
-        <input id="insp_prix" type="text" value="0" inputmode="decimal" style="width:160px;margin-top:3px"/>
-      </div>
     </div>
     <div class="total-box">
       <div class="t-row"><span>Prix de base</span><span id="t_base">0,00 €</span></div>
       <div class="t-row" id="row_opts" style="display:none"><span>Options</span><span id="t_opts">0,00 €</span></div>
       <div class="t-row" id="row_sol" style="display:none"><span>Sol souple</span><span id="t_sol">0,00 €</span></div>
-      <div class="t-row" id="row_insp" style="display:none"><span>Visite d'inspection</span><span id="t_insp">0,00 €</span></div>
       <div class="t-row" id="row_remise" style="display:none;color:#c0392b"><span id="remise_label">Remise</span><span id="t_remise">0,00 €</span></div>
       <div class="t-row main"><span>PRIX TOTAL HT *</span><span id="t_total">0,00 €</span></div>
     </div>
@@ -667,7 +662,7 @@ function applyExpr(el) {
   el.value = res;
 }
 // Blur sur les champs statiques
-['p_base','sol_prix','insp_prix','remise_val'].forEach(function(id){
+['p_base','sol_prix','remise_val'].forEach(function(id){
   var el=document.getElementById(id);
   if(el) el.addEventListener('blur',function(){ applyExpr(this); calcTotal(); });
 });
@@ -690,12 +685,10 @@ function calcTotal() {
   var sumOpts=0; opts.forEach(function(o){sumOpts+=parseFloat(o.prix)||0;});
   var solCk=document.getElementById('sol_souple').checked;
   var solP=solCk?(parseFloat(document.getElementById('sol_prix').value)||0):0;
-  var inspCk=document.getElementById('insp_ck').checked;
-  var inspP=inspCk?(parseFloat(document.getElementById('insp_prix').value)||0):0;
   var remCk=document.getElementById('remise_ck').checked;
   var remVal=remCk?(parseFloat(document.getElementById('remise_val').value)||0):0;
   document.getElementById('remise_row').style.display=remCk?'flex':'none';
-  var sousTotal=base+sumOpts+solP+inspP;
+  var sousTotal=base+sumOpts+solP;
   document.getElementById('t_base').textContent=fmtE(base);
   var rowO=document.getElementById('row_opts');
   if(sumOpts>0){rowO.style.display='';document.getElementById('t_opts').textContent=fmtE(sumOpts);}
@@ -703,9 +696,6 @@ function calcTotal() {
   var rowS=document.getElementById('row_sol');
   if(solCk&&solP>0){rowS.style.display='';document.getElementById('t_sol').textContent=fmtE(solP);}
   else rowS.style.display='none';
-  var rowI=document.getElementById('row_insp');
-  if(inspCk&&inspP>0){rowI.style.display='';document.getElementById('t_insp').textContent=fmtE(inspP);}
-  else rowI.style.display='none';
   var rowR=document.getElementById('row_remise');
   if(remCk&&remVal>0){rowR.style.display='';document.getElementById('t_remise').textContent='-'+fmtE(remVal);}
   else if(rowR){rowR.style.display='none';}
@@ -716,11 +706,6 @@ document.getElementById('sol_souple').addEventListener('change',function(){
   calcTotal();
 });
 document.getElementById('sol_prix').addEventListener('input',calcTotal);
-document.getElementById('insp_ck').addEventListener('change',function(){
-  document.getElementById('insp_prix_row').style.display=this.checked?'':'none';
-  calcTotal(); updateDestNote();
-});
-document.getElementById('insp_prix').addEventListener('input',calcTotal);
 function updateDestNote(){
   var d=document.getElementById('dest').value;
   var insp=document.getElementById('insp_ck').checked;
@@ -872,11 +857,10 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var solChecked=document.getElementById('sol_souple').checked;
     var solPrixVal=solChecked?(parseFloat(g('sol_prix'))||0):0;
     var inspChecked=document.getElementById('insp_ck').checked;
-    var inspPrixVal=inspChecked?(parseFloat(g('insp_prix'))||0):0;
-    var allOpts=opts.slice(); if(solChecked) allOpts.push({label:'Sol souple à poser dans l\'aire de jeux',prix:String(solPrixVal)}); if(inspChecked) allOpts.push({label:'Visite d\'inspection sur site',prix:String(inspPrixVal)});
+    var allOpts=opts.slice(); if(solChecked) allOpts.push({label:'Sol souple à poser dans l\'aire de jeux',prix:String(solPrixVal)}); if(inspChecked) allOpts.push({label:'Visite d\'inspection sur site',prix:'inclus'});
     var remCk2=document.getElementById('remise_ck').checked;
     var remVal2=remCk2?(parseFloat(document.getElementById('remise_val').value)||0):0;
-    var sousTotal2=base+sumOpts2+solPrixVal+inspPrixVal;
+    var sousTotal2=base+sumOpts2+solPrixVal;
     var total=sousTotal2-remVal2;
 
     // Calcul de la hauteur nécessaire pour la partie droite (sans total ni note)
@@ -961,7 +945,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
       doc.setFont('helvetica','normal'); doc.setFontSize(8.5); sc(GRIS);
       optL.forEach(function(line,li){
         doc.text(line, rightX+5, ry+3);
-        if(li===0) doc.text(fmtPDF(p)+' €', rightX+rightW-3, ry+3, {align:'right'});
+        if(li===0) doc.text(o.prix==='inclus'?'Inclus':fmtPDF(p)+' €', rightX+rightW-3, ry+3, {align:'right'});
         ry+=5;
       });
       ry+=1;
