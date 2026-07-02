@@ -448,10 +448,30 @@ textarea{resize:vertical;min-height:52px}
 .btn-pdf:active{transform:scale(.98)}
 .msg{text-align:center;font-size:12.5px;margin-top:7px;min-height:18px;color:#666}
 .err{color:#e24b4a}
+#loginScreen{position:fixed;inset:0;background:#f2f2ee;display:flex;align-items:center;justify-content:center;z-index:9999}
+#loginBox{background:#fff;border:1px solid #e4e4e0;border-radius:12px;padding:32px 28px;max-width:360px;width:90%;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.08)}
+#loginBox img{height:52px;margin-bottom:16px}
+#loginBox h2{font-size:16px;font-weight:700;margin-bottom:4px}
+#loginBox .login-sub{font-size:12px;color:#888;margin-bottom:20px}
+#loginBox input[type=password]{margin-bottom:12px;font-size:14px;text-align:center;letter-spacing:.08em}
+#loginBtn{width:100%;padding:10px;background:#fd9c00;color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;transition:background .15s}
+#loginBtn:hover{background:#e08800}
+#loginErr{color:#e24b4a;font-size:12px;margin-top:10px;display:none}
+#mainApp{display:none}
 </style>
 </head>
 <body>
-<div class="wrap">
+<div id="loginScreen">
+  <div id="loginBox">
+    <img id="loginLogo" src="" alt="SPI"/>
+    <h2>SPI Global Play Retail</h2>
+    <p class="login-sub">Accès réservé aux commerciaux autorisés</p>
+    <input type="password" id="loginPwd" placeholder="Mot de passe" autocomplete="current-password"/>
+    <button id="loginBtn">Accéder</button>
+    <p id="loginErr">Mot de passe incorrect.</p>
+  </div>
+</div>
+<div class="wrap" id="mainApp">
   <div class="app-header">
     <img id="logoImg" src="" alt="SPI"/>
     <div>
@@ -595,6 +615,24 @@ var LOGO_B64 = "iVBORw0KGgoAAAANSUhEUgAAAsoAAAGtCAYAAAAPj1I/AAAACXBIWXMAABcSAAAX
 var _dreamFont=new FontFace('DreamingOutloud','url(data:font/otf;base64,'+FONT_DREAMING+')');_dreamFont.load().then(function(f){document.fonts.add(f);}).catch(function(){});
 
 document.getElementById('logoImg').src = 'data:image/png;base64,' + LOGO_B64;
+document.getElementById('loginLogo').src = 'data:image/png;base64,' + LOGO_B64;
+
+// ── Authentification ──
+(function(){
+  var H='4ca303a999f75ba07c3fa75c36cba0817d3d5c58cadf2dbfb3cdd9b6cdddc497';
+  function unlock(){ document.getElementById('loginScreen').style.display='none'; document.getElementById('mainApp').style.display=''; }
+  if(sessionStorage.getItem('spi_auth')==='1'){ unlock(); return; }
+  function tryLogin(){
+    var pwd=document.getElementById('loginPwd').value;
+    crypto.subtle.digest('SHA-256',new TextEncoder().encode(pwd)).then(function(buf){
+      var hex=Array.from(new Uint8Array(buf)).map(function(b){return b.toString(16).padStart(2,'0');}).join('');
+      if(hex===H){ sessionStorage.setItem('spi_auth','1'); unlock(); }
+      else{ var e=document.getElementById('loginErr'); e.style.display='block'; document.getElementById('loginPwd').value=''; document.getElementById('loginPwd').focus(); }
+    });
+  }
+  document.getElementById('loginBtn').addEventListener('click',tryLogin);
+  document.getElementById('loginPwd').addEventListener('keydown',function(e){ if(e.key==='Enter') tryLogin(); });
+})();
 
 // ── Photo ──
 var photoDataURL = null; var photoAR = 1.5;
