@@ -440,6 +440,8 @@ textarea{resize:vertical;min-height:52px}
 .photo-zone p{font-size:12.5px;color:#bbb;pointer-events:none}
 #photoPreview{width:100%;max-height:160px;object-fit:cover;border-radius:5px;margin-top:8px;display:none}
 #signPreview{max-height:80px;max-width:100%;object-fit:contain;border-radius:4px;margin-top:8px;display:none;border:1px solid #eee;padding:4px}
+.img-del-btn{display:none;margin-top:6px;font-size:11.5px;color:#e24b4a;background:none;border:1px solid #e24b4a;border-radius:4px;padding:3px 10px;cursor:pointer}
+.img-del-btn:hover{background:#fff0f0}
 .total-box{background:#fafaf5;border:1px solid #ede5c0;border-radius:6px;padding:11px 14px;margin-top:8px}
 .t-row{display:flex;justify-content:space-between;font-size:13px;padding:2px 0;color:#888}
 .t-row.main{font-size:15px;font-weight:700;color:#1a1a1a;border-top:1px solid #e0d5a0;margin-top:6px;padding-top:7px}
@@ -515,6 +517,7 @@ textarea{resize:vertical;min-height:52px}
       <p>🖼️ Cliquez pour uploader une photo<br><small>ou <strong>Ctrl+V</strong> pour coller depuis le presse-papiers</small></p>
     </div>
     <img id="photoPreview" alt="Aperçu"/>
+    <button class="img-del-btn" id="photoDelBtn">× Supprimer la photo</button>
   </div>
 
   <div class="card">
@@ -601,6 +604,7 @@ textarea{resize:vertical;min-height:52px}
         <p>✍️ Cliquez pour uploader une signature<br><small>ou <strong>Ctrl+V</strong> après avoir cliqué ici</small></p>
       </div>
       <img id="signPreview" alt="Signature"/>
+      <button class="img-del-btn" id="signDelBtn">× Supprimer la signature</button>
     </div>
   </div>
 
@@ -640,6 +644,22 @@ var signDataURL = null; var signAR = 3;
 var activeImageZone = 'photo';
 document.getElementById('photoZone').addEventListener('mousedown', function(){ activeImageZone='photo'; });
 document.getElementById('signZone').addEventListener('mousedown', function(){ activeImageZone='sign'; });
+document.getElementById('photoDelBtn').addEventListener('click', function(e){
+  e.stopPropagation();
+  photoDataURL=null; photoAR=1.5;
+  var p=document.getElementById('photoPreview'); p.src=''; p.style.display='none';
+  document.getElementById('photoInput').value='';
+  document.querySelector('#photoZone p').innerHTML='🖼️ Cliquez pour uploader une photo<br><small>ou <strong>Ctrl+V</strong> pour coller depuis le presse-papiers</small>';
+  this.style.display='none';
+});
+document.getElementById('signDelBtn').addEventListener('click', function(e){
+  e.stopPropagation();
+  signDataURL=null; signAR=3;
+  var p=document.getElementById('signPreview'); p.src=''; p.style.display='none';
+  document.getElementById('signInput').value='';
+  document.querySelector('#signZone p').innerHTML='✍️ Cliquez pour uploader une signature<br><small>ou <strong>Ctrl+V</strong> après avoir cliqué ici</small>';
+  this.style.display='none';
+});
 
 document.getElementById('photoInput').addEventListener('change', function(e) {
   var f = e.target.files[0]; if (!f) return;
@@ -650,6 +670,7 @@ document.getElementById('photoInput').addEventListener('change', function(e) {
     var p = document.getElementById('photoPreview');
     p.src = photoDataURL; p.style.display = 'block';
     document.querySelector('#photoZone p').textContent = '✅ ' + f.name;
+    document.getElementById('photoDelBtn').style.display='inline-block';
   };
   r.readAsDataURL(f);
 });
@@ -662,6 +683,7 @@ document.getElementById('signInput').addEventListener('change', function(e) {
     var p = document.getElementById('signPreview');
     p.src = signDataURL; p.style.display = 'block';
     document.querySelector('#signZone p').textContent = '✅ ' + f.name;
+    document.getElementById('signDelBtn').style.display='inline-block';
   };
   r.readAsDataURL(f);
 });
@@ -680,6 +702,7 @@ document.addEventListener('paste', function(e){
           var p=document.getElementById('signPreview');
           p.src=signDataURL; p.style.display='block';
           document.querySelector('#signZone p').innerHTML='✅ Signature collée<br><small>Ctrl+V pour changer</small>';
+          document.getElementById('signDelBtn').style.display='inline-block';
         };
       } else {
         r2.onload=function(ev){
@@ -688,6 +711,7 @@ document.addEventListener('paste', function(e){
           var p=document.getElementById('photoPreview');
           p.src=photoDataURL; p.style.display='block';
           document.querySelector('#photoZone p').innerHTML='✅ Image collée depuis le presse-papiers<br><small>Ctrl+V pour changer</small>';
+          document.getElementById('photoDelBtn').style.display='inline-block';
         };
       }
       r2.readAsDataURL(blob);
