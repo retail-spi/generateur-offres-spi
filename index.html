@@ -990,7 +990,11 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     if(photoDataURL){
       try{
         var ext2=photoDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';
-        doc.addImage(photoDataURL,ext2,ml+1,tableTop+1,leftW-2,tableH-2);
+        var maxW=leftW-2, maxH=tableH-2, ar=photoAR||1.5;
+        var imgW,imgH;
+        if(ar>=maxW/maxH){imgW=maxW;imgH=maxW/ar;}else{imgH=maxH;imgW=maxH*ar;}
+        var imgX=ml+1+(maxW-imgW)/2, imgY=tableTop+1+(maxH-imgH)/2;
+        doc.addImage(photoDataURL,ext2,imgX,imgY,imgW,imgH);
       }catch(e){}
     } else {
       sf([240,240,238]); doc.rect(ml+1,tableTop+1,leftW-2,tableH-2,'F');
