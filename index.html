@@ -1187,15 +1187,14 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     doc.text('Date :',ml,y); doc.text('Date :',sigRX,y); y+=6;
     var nomCommercial=g('c_commercial');
     doc.text('Nom : '+nomCommercial,ml,y); doc.text('Nom :',sigRX,y); y+=6;
+    doc.text('Signature et cachet',ml,y); doc.text('Signature et cachet',sigRX,y);
     if(signDataURL){
       try{
         var sExt=signDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';
         var sW=Math.min(sigRX-ml-4, 55), sH=sigImgH;
-        doc.addImage(signDataURL,sExt,ml,y,sW,sH);
+        doc.addImage(signDataURL,sExt,ml,y+3,sW,sH);
       }catch(e){}
-      y+=sigImgH+2;
     }
-    doc.text('Signature et cachet',ml,y); doc.text('Signature et cachet',sigRX,y);
 
     // Note asterisque : position fixe au-dessus du footer
     var noteY=noteYstart;
