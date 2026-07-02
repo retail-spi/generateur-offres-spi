@@ -620,7 +620,7 @@ document.getElementById('loginLogo').src = 'data:image/png;base64,' + LOGO_B64;
 // ── Authentification ──
 (function(){
   var H='4ca303a999f75ba07c3fa75c36cba0817d3d5c58cadf2dbfb3cdd9b6cdddc497';
-  function unlock(){ document.getElementById('loginScreen').style.display='none'; document.getElementById('mainApp').style.display=''; }
+  function unlock(){ document.getElementById('loginScreen').style.display='none'; document.getElementById('mainApp').style.display='block'; }
   if(sessionStorage.getItem('spi_auth')==='1'){ unlock(); return; }
   function tryLogin(){
     var pwd=document.getElementById('loginPwd').value;
