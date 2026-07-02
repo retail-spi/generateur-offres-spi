@@ -598,7 +598,7 @@ document.getElementById('logoImg').src = 'data:image/png;base64,' + LOGO_B64;
 
 // ── Photo ──
 var photoDataURL = null; var photoAR = 1.5;
-var signDataURL = null;
+var signDataURL = null; var signAR = 3;
 var activeImageZone = 'photo';
 document.getElementById('photoZone').addEventListener('mousedown', function(){ activeImageZone='photo'; });
 document.getElementById('signZone').addEventListener('mousedown', function(){ activeImageZone='sign'; });
@@ -620,6 +620,7 @@ document.getElementById('signInput').addEventListener('change', function(e) {
   var r = new FileReader();
   r.onload = function(ev) {
     signDataURL = ev.target.result;
+    var _sImg=new Image(); _sImg.onload=function(){signAR=this.naturalWidth/this.naturalHeight||3;}; _sImg.src=signDataURL;
     var p = document.getElementById('signPreview');
     p.src = signDataURL; p.style.display = 'block';
     document.querySelector('#signZone p').textContent = '✅ ' + f.name;
@@ -637,6 +638,7 @@ document.addEventListener('paste', function(e){
       if(activeImageZone==='sign'){
         r2.onload=function(ev){
           signDataURL=ev.target.result;
+          var _sImg2=new Image(); _sImg2.onload=function(){signAR=this.naturalWidth/this.naturalHeight||3;}; _sImg2.src=signDataURL;
           var p=document.getElementById('signPreview');
           p.src=signDataURL; p.style.display='block';
           document.querySelector('#signZone p').innerHTML='✅ Signature collée<br><small>Ctrl+V pour changer</small>';
@@ -1175,7 +1177,8 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var noteBlockH=noteL.length*3+4;
     var noteYstart=H-18-noteBlockH;
     // Bloc bas : 'Nous restons'(5) + espace(14) + signatures + marge
-    var sigImgH=signDataURL?18:0;
+    var sigMaxW=Math.min((sigRX||ml+cw*0.52)-ml-4, 55);
+    var sigImgH=signDataURL?Math.round(sigMaxW/(signAR||3)):0;
     y=Math.min(y, noteYstart-(50+sigImgH));
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
     doc.text('Nous restons à votre disposition pour tout renseignement complémentaire.',ml,y); y+=14;
@@ -1191,8 +1194,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     if(signDataURL){
       try{
         var sExt=signDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';
-        var sW=Math.min(sigRX-ml-4, 55), sH=sigImgH;
-        doc.addImage(signDataURL,sExt,ml,y+3,sW,sH);
+        doc.addImage(signDataURL,sExt,ml,y+3,sigMaxW,sigImgH);
       }catch(e){}
     }
 
