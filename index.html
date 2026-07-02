@@ -439,6 +439,7 @@ textarea{resize:vertical;min-height:52px}
 .photo-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
 .photo-zone p{font-size:12.5px;color:#bbb;pointer-events:none}
 #photoPreview{width:100%;max-height:160px;object-fit:cover;border-radius:5px;margin-top:8px;display:none}
+#signPreview{max-height:80px;max-width:100%;object-fit:contain;border-radius:4px;margin-top:8px;display:none;border:1px solid #eee;padding:4px}
 .total-box{background:#fafaf5;border:1px solid #ede5c0;border-radius:6px;padding:11px 14px;margin-top:8px}
 .t-row{display:flex;justify-content:space-between;font-size:13px;padding:2px 0;color:#888}
 .t-row.main{font-size:15px;font-weight:700;color:#1a1a1a;border-top:1px solid #e0d5a0;margin-top:6px;padding-top:7px}
@@ -570,6 +571,19 @@ textarea{resize:vertical;min-height:52px}
     </div>
   </div>
 
+  <div class="card">
+    <div class="card-title">Commercial SPI Global Play</div>
+    <div class="field" style="margin-bottom:10px"><label>Nom du commercial</label><input id="c_commercial" placeholder="Prénom Nom"/></div>
+    <div class="field">
+      <label>Signature du commercial</label>
+      <div class="photo-zone" id="signZone" style="margin-top:4px">
+        <input type="file" id="signInput" accept="image/*"/>
+        <p>✍️ Cliquez pour uploader une signature<br><small>ou <strong>Ctrl+V</strong> après avoir cliqué ici</small></p>
+      </div>
+      <img id="signPreview" alt="Signature"/>
+    </div>
+  </div>
+
   <button class="btn-pdf" id="btnPDF">⬇ Générer le PDF officiel</button>
   <p class="msg" id="msg"></p>
 </div>
@@ -584,6 +598,11 @@ document.getElementById('logoImg').src = 'data:image/png;base64,' + LOGO_B64;
 
 // ── Photo ──
 var photoDataURL = null; var photoAR = 1.5;
+var signDataURL = null;
+var activeImageZone = 'photo';
+document.getElementById('photoZone').addEventListener('mousedown', function(){ activeImageZone='photo'; });
+document.getElementById('signZone').addEventListener('mousedown', function(){ activeImageZone='sign'; });
+
 document.getElementById('photoInput').addEventListener('change', function(e) {
   var f = e.target.files[0]; if (!f) return;
   var r = new FileReader();
@@ -592,11 +611,21 @@ document.getElementById('photoInput').addEventListener('change', function(e) {
     var _tImg=new Image(); _tImg.onload=function(){photoAR=this.naturalWidth/this.naturalHeight||1.5;}; _tImg.src=photoDataURL;
     var p = document.getElementById('photoPreview');
     p.src = photoDataURL; p.style.display = 'block';
-    document.querySelector('.photo-zone p').textContent = '✅ ' + f.name;
+    document.querySelector('#photoZone p').textContent = '✅ ' + f.name;
   };
   r.readAsDataURL(f);
 });
-
+document.getElementById('signInput').addEventListener('change', function(e) {
+  var f = e.target.files[0]; if (!f) return;
+  var r = new FileReader();
+  r.onload = function(ev) {
+    signDataURL = ev.target.result;
+    var p = document.getElementById('signPreview');
+    p.src = signDataURL; p.style.display = 'block';
+    document.querySelector('#signZone p').textContent = '✅ ' + f.name;
+  };
+  r.readAsDataURL(f);
+});
 
 // ── Coller une image depuis le presse-papiers (Ctrl+V) ──
 document.addEventListener('paste', function(e){
@@ -605,13 +634,22 @@ document.addEventListener('paste', function(e){
     if(items[i].type.indexOf('image')!==-1){
       var blob=items[i].getAsFile();
       var r2=new FileReader();
-      r2.onload=function(ev){
-        photoDataURL=ev.target.result;
-        var _tImg=new Image(); _tImg.onload=function(){photoAR=this.naturalWidth/this.naturalHeight||1.5;}; _tImg.src=photoDataURL;
-        var p=document.getElementById('photoPreview');
-        p.src=photoDataURL; p.style.display='block';
-        document.querySelector('.photo-zone p').innerHTML='✅ Image collée depuis le presse-papiers<br><small>Ctrl+V pour changer</small>';
-      };
+      if(activeImageZone==='sign'){
+        r2.onload=function(ev){
+          signDataURL=ev.target.result;
+          var p=document.getElementById('signPreview');
+          p.src=signDataURL; p.style.display='block';
+          document.querySelector('#signZone p').innerHTML='✅ Signature collée<br><small>Ctrl+V pour changer</small>';
+        };
+      } else {
+        r2.onload=function(ev){
+          photoDataURL=ev.target.result;
+          var _tImg=new Image(); _tImg.onload=function(){photoAR=this.naturalWidth/this.naturalHeight||1.5;}; _tImg.src=photoDataURL;
+          var p=document.getElementById('photoPreview');
+          p.src=photoDataURL; p.style.display='block';
+          document.querySelector('#photoZone p').innerHTML='✅ Image collée depuis le presse-papiers<br><small>Ctrl+V pour changer</small>';
+        };
+      }
       r2.readAsDataURL(blob);
       break;
     }
@@ -1136,16 +1174,27 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var noteL=doc.splitTextToSize(noteText2,cw);
     var noteBlockH=noteL.length*3+4;
     var noteYstart=H-18-noteBlockH;
-    // Bloc bas : 'Nous restons'(5) + espace(14) + signatures(18) + marge(5) = 42mm
-    y=Math.min(y, noteYstart-36);
+    // Bloc bas : 'Nous restons'(5) + espace(14) + signatures + marge
+    var sigImgH=signDataURL?18:0;
+    y=Math.min(y, noteYstart-(50+sigImgH));
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
     doc.text('Nous restons à votre disposition pour tout renseignement complémentaire.',ml,y); y+=14;
 
     // Signatures
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
-    var sigRX=ml+cw*0.52; doc.text('SPI Global Play Retail sa',ml,y); doc.text('Pour accord,',sigRX,y); y+=6;
+    var sigRX=ml+cw*0.52;
+    doc.text('SPI Global Play Retail sa',ml,y); doc.text('Pour accord,',sigRX,y); y+=6;
     doc.text('Date :',ml,y); doc.text('Date :',sigRX,y); y+=6;
-    doc.text('Nom :',ml,y); doc.text('Nom :',sigRX,y); y+=6;
+    var nomCommercial=g('c_commercial');
+    doc.text('Nom : '+nomCommercial,ml,y); doc.text('Nom :',sigRX,y); y+=6;
+    if(signDataURL){
+      try{
+        var sExt=signDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';
+        var sW=Math.min(sigRX-ml-4, 55), sH=sigImgH;
+        doc.addImage(signDataURL,sExt,ml,y,sW,sH);
+      }catch(e){}
+      y+=sigImgH+2;
+    }
     doc.text('Signature et cachet',ml,y); doc.text('Signature et cachet',sigRX,y);
 
     // Note asterisque : position fixe au-dessus du footer
