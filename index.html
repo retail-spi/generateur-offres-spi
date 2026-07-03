@@ -1103,15 +1103,14 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     doc.line(ml,tableTop+tableH,ml+cw,tableTop+tableH);
 
 
-    // ── Note prix (sous tout le bloc, pleine largeur) ──
+    // ── Note prix (sous la case PRIX TOTAL, colonne droite) ──
     var noteY2=tableTop+tableH+BOTTOM_H+2;
     doc.setFont('helvetica','italic'); doc.setFontSize(7); sc(GRIS_MED);
     var dest=g('dest'); var insp2=document.getElementById('insp_ck').checked; var noteText=(dest==='BE')?'* Prix hors TVA':'* Prix exempt de TVA'; if(dest==='EU') noteText+=' – livraison intracommunautaire'; else if(dest==='NON-EU') noteText+=' – livraison hors Union Européenne'; if(!insp2) noteText+=' – Visite d\'inspection sur site non incluse';
-    var noteLines=doc.splitTextToSize(noteText,cw);
-    doc.text(noteLines,ml,noteY2+3);
+    var noteLines=doc.splitTextToSize(noteText,pTW);
+    doc.text(noteLines,pTX,noteY2+3);
 
-    y=tableTop+tableH+BOTTOM_H+noteLines.length*4+8;
-    y+=8; // espace supplementaire avant liste
+    y=tableTop+tableH+BOTTOM_H+noteLines.length*4+20;
     // Livré avec (contenu fixe)
     var livraisonItems=['Plans de différentes vues et implantation','Manuel technique, d\'entretien et de nettoyage','Attestation de conformité délivrée par un organisme référencé'];
     doc.setFont('helvetica','bold'); doc.setFontSize(10); sc(GRIS);
