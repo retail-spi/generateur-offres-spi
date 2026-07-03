@@ -1083,13 +1083,13 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     sf([215,240,215]); doc.rect(pTX,totalY,pTW,BOTTOM_H,'F');
     var priceMidY=totalY+BOTTOM_H/2;
     doc.setFont('helvetica','bold'); doc.setFontSize(11); sc(GRIS);
-    doc.text('PRIX TOTAL* :', pTX+pTW/2, priceMidY-2.5, {align:'center'});
-    doc.text(fmtPDF(total)+' €', pTX+pTW/2, priceMidY+4, {align:'center'});
+    doc.text('PRIX TOTAL* :', pTX+pTW/2, priceMidY-0.5, {align:'center'});
+    doc.text(fmtPDF(total)+' €', pTX+pTW/2, priceMidY+6, {align:'center'});
 
     // ── Specs techniques (gauche, sous l'image, 3 lignes centrées) ──
     if(SPEC_H>0){
       var specCx=ml+leftW/2;
-      var specOff=(BOTTOM_H-(specLines.length-1)*5)/2;
+      var specOff=(BOTTOM_H-(specLines.length-1)*5)/2+2;
       doc.setFont('helvetica','normal'); doc.setFontSize(8); sc([80,80,80]);
       specLines.forEach(function(sp,si){
         doc.text(sp,specCx,totalY+specOff+si*5,{align:'center'});
