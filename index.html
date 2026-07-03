@@ -1146,7 +1146,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     doc.addPage();
     drawLogo(doc);
     drawFooter(doc,2);
-    if(photoDataURL){var pe2=photoDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';var maxW2=68,maxH2=38,ar2=photoAR||1.5,_pw2,_ph2;if(ar2>=maxW2/maxH2){_pw2=maxW2;_ph2=maxW2/ar2;}else{_ph2=maxH2;_pw2=maxH2*ar2;}try{doc.addImage(photoDataURL,pe2,W-mr-_pw2-10,24,_pw2,_ph2);}catch(e){}}
+    if(photoDataURL){var pe2=photoDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';var maxW2=85,maxH2=50,ar2=photoAR||1.5,_pw2,_ph2;if(ar2>=maxW2/maxH2){_pw2=maxW2;_ph2=maxW2/ar2;}else{_ph2=maxH2;_pw2=maxH2*ar2;}try{doc.addImage(photoDataURL,pe2,W-mr-_pw2-10,24,_pw2,_ph2);}catch(e){}}
     y=50;
 
     // Titre "Informations générales"
