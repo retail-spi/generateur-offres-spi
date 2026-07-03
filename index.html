@@ -875,13 +875,14 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
 
     // Adresse client (coin supérieur droit)
     var y=45;
+    var adrRight=W-mr-15;
     doc.setFont('helvetica','bold'); doc.setFontSize(11); sc(GRIS);
-    doc.text(((g('c_brand')+' '+g('c_lieu')).trim()||'—'),W-mr,y,{align:'right'}); y+=5.5;
+    doc.text(((g('c_brand')+' '+g('c_lieu')).trim()||'—'),adrRight,y,{align:'right'}); y+=5.5;
     doc.setFont('helvetica','normal'); doc.setFontSize(9.5); sc(GRIS_MED);
-    if(g('c_groupe')){doc.text(g('c_groupe'),W-mr,y,{align:'right'});y+=5;}
+    if(g('c_groupe')){doc.text(g('c_groupe'),adrRight,y,{align:'right'});y+=5;}
     var adrL=(g('c_adresse')||'').split('\n');
-    adrL.forEach(function(l){if(l.trim()){doc.text(l.trim(),W-mr,y,{align:'right'});y+=5;}});
-    if(g('c_tva')){doc.text('TVA : '+g('c_tva'),W-mr,y,{align:'right'}); y+=8;}
+    adrL.forEach(function(l){if(l.trim()){doc.text(l.trim(),adrRight,y,{align:'right'});y+=5;}});
+    if(g('c_tva')){doc.text('TVA : '+g('c_tva'),adrRight,y,{align:'right'}); y+=8;}
 
     // ── Icones de section ──────────────────────────────────────────────
     function drawInfoIcon(d,cx,cy){
@@ -921,7 +922,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var moisFr=['janvier','f\u00e9vrier','mars','avril','mai','juin','juillet','ao\u00fbt','septembre','octobre','novembre','d\u00e9cembre'];
     if(dv){var pts=dv.split('-');oDate=parseInt(pts[2])+' '+moisFr[parseInt(pts[1])-1]+' '+pts[0];}
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
-    doc.text((g('o_lieu')||'Herstal')+', '+(oDate||'…')+'.', W-mr, y, {align:'right'});
+    doc.text((g('o_lieu')||'Herstal')+', '+(oDate||'…')+'.', adrRight, y, {align:'right'});
     y+=10;
 
     // Madame, Monsieur
