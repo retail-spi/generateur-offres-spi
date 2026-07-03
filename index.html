@@ -1126,6 +1126,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
       doc.line(ml+4.4,y+1.4,ml+6.8,y-1.8);
       doc.setLineWidth(0.3);
       itemLines.forEach(function(l,i){ doc.text(i===0?l:'     '+l,ml+8,y); y+=5.5; });
+      y+=4;
     });
     y+=4;
     // Sans sol souple (si non coché)
