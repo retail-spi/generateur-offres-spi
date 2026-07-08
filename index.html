@@ -546,9 +546,19 @@ textarea{resize:vertical;min-height:52px}
         <input type="checkbox" id="sol_souple" style="width:auto"/>
         Inclure sol souple dans l'offre
       </label>
-      <div id="sol_prix_row" style="display:none;margin-top:6px">
-        <label style="font-size:12px;color:#666">Prix sol souple (€ HT)</label>
-        <input id="sol_prix" type="text" value="0" inputmode="decimal" style="width:160px;margin-top:3px"/>
+      <div id="sol_prix_row" style="display:none;margin-top:8px">
+        <div style="display:flex;gap:18px;margin-bottom:6px">
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
+            <input type="radio" name="sol_mode" id="sol_mode_inclus" value="inclus" checked onchange="updateSolMode()"/> Inclus
+          </label>
+          <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
+            <input type="radio" name="sol_mode" id="sol_mode_prix" value="prix" onchange="updateSolMode()"/> Indiquer un prix
+          </label>
+        </div>
+        <div id="sol_prix_input" style="display:none">
+          <label style="font-size:12px;color:#666">Prix sol souple (€ HT)</label>
+          <input id="sol_prix" type="text" value="0" inputmode="decimal" style="width:160px;margin-top:3px"/>
+        </div>
       </div>
     </div>
     <div style="margin:8px 0;padding:8px 10px;background:#f9f9f7;border-radius:6px;border:1px dashed #ddd">
@@ -596,7 +606,10 @@ textarea{resize:vertical;min-height:52px}
 
   <div class="card">
     <div class="card-title">Commercial SPI Global Play</div>
-    <div class="field" style="margin-bottom:10px"><label>Nom du commercial</label><input id="c_commercial" placeholder="Prénom Nom"/></div>
+    <div class="grid2" style="margin-bottom:10px">
+      <div class="field"><label>Nom du commercial</label><input id="c_commercial" placeholder="Prénom Nom"/></div>
+      <div class="field"><label>Date de signature (laisser vide si non signé)</label><input id="c_sign_date" type="date"/></div>
+    </div>
     <div class="field">
       <label>Signature du commercial</label>
       <div class="photo-zone" id="signZone" style="margin-top:4px">
@@ -786,7 +799,7 @@ function calcTotal() {
   var base=parseFloat(document.getElementById('p_base').value)||0;
   var sumOpts=0; opts.forEach(function(o){sumOpts+=parseFloat(o.prix)||0;});
   var solCk=document.getElementById('sol_souple').checked;
-  var solP=solCk?(parseFloat(document.getElementById('sol_prix').value)||0):0;
+  var solP=(solCk&&getSolMode()==='prix')?(parseFloat(document.getElementById('sol_prix').value)||0):0;
   var remCk=document.getElementById('remise_ck').checked;
   var remVal=remCk?(parseFloat(document.getElementById('remise_val').value)||0):0;
   document.getElementById('remise_row').style.display=remCk?'flex':'none';
@@ -803,8 +816,10 @@ function calcTotal() {
   else if(rowR){rowR.style.display='none';}
   document.getElementById('t_total').textContent=fmtE(sousTotal-remVal);
 }
+function getSolMode(){ var r=document.querySelector('input[name="sol_mode"]:checked'); return r?r.value:'inclus'; }
+function updateSolMode(){ document.getElementById('sol_prix_input').style.display=getSolMode()==='prix'?'block':'none'; calcTotal(); }
 document.getElementById('sol_souple').addEventListener('change',function(){
-  document.getElementById('sol_prix_row').style.display=this.checked?'':'none';
+  document.getElementById('sol_prix_row').style.display=this.checked?'block':'none';
   calcTotal();
 });
 document.getElementById('sol_prix').addEventListener('input',calcTotal);
@@ -958,9 +973,10 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var base=parseFloat(g('p_base'))||0;
     var sumOpts2=0; opts.forEach(function(o){sumOpts2+=parseFloat(o.prix)||0;});
     var solChecked=document.getElementById('sol_souple').checked;
-    var solPrixVal=solChecked?(parseFloat(g('sol_prix'))||0):0;
+    var solMode=getSolMode();
+    var solPrixVal=(solChecked&&solMode==='prix')?(parseFloat(g('sol_prix'))||0):0;
     var inspChecked=document.getElementById('insp_ck').checked;
-    var allOpts=opts.slice(); if(solChecked) allOpts.push({label:'Sol souple à poser dans l\'aire de jeux',prix:String(solPrixVal)}); if(inspChecked) allOpts.push({label:'Visite d\'inspection sur site',prix:'inclus'});
+    var allOpts=opts.slice(); if(solChecked) allOpts.push({label:'Sol souple à poser dans l\'aire de jeux',prix:solMode==='inclus'?'inclus':String(solPrixVal)}); if(inspChecked) allOpts.push({label:'Visite d\'inspection sur site',prix:'inclus'});
     var remCk2=document.getElementById('remise_ck').checked;
     var remVal2=remCk2?(parseFloat(document.getElementById('remise_val').value)||0):0;
     var sousTotal2=base+sumOpts2+solPrixVal;
@@ -1146,7 +1162,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     doc.addPage();
     drawLogo(doc);
     drawFooter(doc,2);
-    if(photoDataURL){var pe2=photoDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';var maxW2=85,maxH2=50,ar2=photoAR||1.5,_pw2,_ph2;if(ar2>=maxW2/maxH2){_pw2=maxW2;_ph2=maxW2/ar2;}else{_ph2=maxH2;_pw2=maxH2*ar2;}try{doc.addImage(photoDataURL,pe2,W-mr-_pw2-10,24,_pw2,_ph2);}catch(e){}}
+    if(photoDataURL){var pe2=photoDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';var maxW2=72,maxH2=42,ar2=photoAR||1.5,_pw2,_ph2;if(ar2>=maxW2/maxH2){_pw2=maxW2;_ph2=maxW2/ar2;}else{_ph2=maxH2;_pw2=maxH2*ar2;}try{doc.addImage(photoDataURL,pe2,W-mr-_pw2-10,24,_pw2,_ph2);}catch(e){}}
     y=50;
 
     // Titre "Informations générales"
@@ -1255,7 +1271,9 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
     var sigRX=ml+cw*0.52;
     doc.text('SPI Global Play Retail sa',ml,y); doc.text('Pour accord,',sigRX,y); y+=6;
-    doc.text('Date :',ml,y); doc.text('Date :',sigRX,y); y+=6;
+    var signDateVal=g('c_sign_date'); var signDateStr='';
+    if(signDateVal){var sdp=signDateVal.split('-');signDateStr=' '+parseInt(sdp[2])+'/'+(sdp[1])+'/'+sdp[0];}
+    doc.text('Date :'+signDateStr,ml,y); doc.text('Date :',sigRX,y); y+=6;
     var nomCommercial=g('c_commercial');
     doc.text('Nom : '+nomCommercial,ml,y); doc.text('Nom :',sigRX,y); y+=6;
     doc.text('Signature et cachet',ml,y); doc.text('Signature et cachet',sigRX,y);
