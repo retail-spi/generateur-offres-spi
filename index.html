@@ -491,6 +491,7 @@ textarea{resize:vertical;min-height:52px}
       <div class="field"><label>Raison Sociale</label><input id="c_groupe"/></div>
       <div class="field full"><label>Adresse de la société (en-tête page 1)</label><textarea id="c_adresse" style="min-height:50px"></textarea></div>
       <div class="field full"><label>Adresse du restaurant (page 2 + intro)</label><textarea id="r_adresse" style="min-height:50px"></textarea></div>
+      <div class="field"><label>Personne de contact (optionnel — remplace "Madame, Monsieur")</label><input id="c_contact" placeholder="ex : Madame Dupont, Monsieur Martin…"/></div>
       <div class="field"><label>N° TVA client</label><input id="c_tva"/></div>
       <div class="field"><label>Manager du projet client</label><input id="c_franchise"/></div>
 
@@ -950,7 +951,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     // Madame, Monsieur
     y=Math.max(y,42); // toujours sous le logo (8+29+3mm)
     doc.setFont('helvetica','normal'); doc.setFontSize(10.5); sc(GRIS);
-    doc.text('Madame, Monsieur,',ml,y); y+=9;
+    doc.text(g('c_contact')||'Madame, Monsieur,',ml,y); y+=9;
 
     // Concerne (souligné)
     var refTitle='Offre de prix pour une aire de jeux de type '+(g('o_ref')||'—');
