@@ -508,6 +508,7 @@ textarea{resize:vertical;min-height:52px}
       <div class="field"><label>N° de projet</label><input id="o_projet"/></div>
       <div class="field full"><label>Référence / Type de produit (titre de l'offre)</label><input id="o_ref"/></div>
       <div class="field"><label>Type d'aire de jeux</label><select id="aire_type"><option value="intérieure">Intérieure</option><option value="extérieure" selected>Extérieure</option></select></div>
+      <div class="field"><label>Langue du PDF</label><select id="lang"><option value="fr">Français</option><option value="en">English</option></select></div>
     </div>
   </div>
 
@@ -864,6 +865,170 @@ var SPI_ADR='1\u00e8re Avenue, 66 \u2013 4040 Herstal \u2013 Belgium';
 var SPI_TEL='Phone : 0032.4.342.52.55';
 var SPI_VAT='VAT : BE0474.388.396';
 
+// ── Traductions PDF ──
+var LANGS = {
+  fr: {
+    contact_default: 'Madame, Monsieur,',
+    concerne_prefix: 'Offre de prix pour une aire de jeux de type ',
+    concerne_label: 'Concerne : ',
+    intro: function(at,ref,brand,lieu,pays){ return 'Nous avons le plaisir de vous communiquer notre meilleure offre de prix pour l\'aire de jeu '+at+' de type '+ref+' pour votre restaurant '+brand+' situé à '+lieu+(pays?', '+pays:'')+'.'; },
+    photo_placeholder: 'Photo du produit',
+    prix_base: 'Prix de l\'aire de jeux',
+    options_label: 'Option(s) :',
+    incluse: 'Incluse',
+    inclus: 'Inclus',
+    remise: 'Remise commerciale :',
+    prix_total: 'PRIX TOTAL* :',
+    note_be: '* Prix hors TVA',
+    note_eu: '* Prix exempt de TVA – livraison intracommunautaire',
+    note_noneu: '* Prix exempt de TVA – livraison hors Union Européenne',
+    note_noinsp: ' – Visite d\'inspection sur site non incluse',
+    livre_avec: 'Aire de jeux livrée avec :',
+    livraison_items: [
+      'Plans de différentes vues et implantation',
+      'Manuel technique, d\'entretien et de nettoyage',
+      'Attestation de conformité délivrée par un organisme référencé'
+    ],
+    sans_sol: 'Sans sol souple à poser dans l\'aire de jeux',
+    info_gen: 'Informations générales :',
+    adresse_rest: 'Adresse du restaurant :',
+    client_franchise: '•  Client franchisé :',
+    chef_projet: '•  Chef de projet client :',
+    delai_titre: 'Délai de livraison :',
+    delai_p1: 'Délai de livraison après réception de cette offre signée, ',
+    delai_bold: 'implantation validée pour accord',
+    delai_p3: 'et paiement de 50 % à la commande : ',
+    delai_default: 'à partir de 45 jours ouvrés',
+    delai_map: {
+      'à partir de 30 jours ouvrés': 'à partir de 30 jours ouvrés',
+      'à partir de 40 jours ouvrés': 'à partir de 40 jours ouvrés',
+      'à partir de 45 jours ouvrés': 'à partir de 45 jours ouvrés'
+    },
+    duree_label: 'Durée d\'installation : ',
+    duree_default: '3-4 jours',
+    duree_map: {'3-4 jours':'3-4 jours','4-5 jours':'4-5 jours','5-7 jours':'5-7 jours','8-10 jours':'8-10 jours'},
+    date_debut: '• Date de début d\'installation souhaitée : ',
+    date_fin: '• Date de fin d\'installation souhaitée : ',
+    paie_label: 'Modalités de paiement : ',
+    paiement_map: {
+      '50 % à la commande, 50 % à la fin de l\'installation.': '50 % à la commande, 50 % à la fin de l\'installation.',
+      'Paiement à 45 jours fin de mois.': 'Paiement à 45 jours fin de mois.',
+      'Paiement à 30 jours date de facture.': 'Paiement à 30 jours date de facture.'
+    },
+    pv: 'Le dernier jour de l\'installation, le client s\'engage à signer le procès-verbal de réception de l\'aire de jeux et le manuel technique.',
+    validite_label: 'Validité de cette offre : ',
+    validite_default: '3 mois',
+    engagement: 'Cette offre doit être signée par le client habilité et validée en retour avant le début de la production de l\'aire de jeux.',
+    nous_restons: 'Nous restons à votre disposition pour tout renseignement complémentaire.',
+    spi_sig: 'SPI Global Play Retail sa',
+    pour_accord: 'Pour accord,',
+    date_sig: 'Date :',
+    nom_left: 'Nom : ',
+    nom_right: 'Nom :',
+    sig_cachet: 'Signature et cachet',
+    note2: '* Veuillez noter que nous ne pouvons être tenus responsables des retards causés par les procédures douanières, les problèmes avec le transporteur ou les retards de nos fournisseurs. Bien que nous fassions tout notre possible pour expédier vos articles dans les délais spécifiés, des circonstances indépendantes de notre volonté peuvent entraîner des retards imprévus.',
+    info_comp: 'Informations complémentaires :',
+    cgv: [
+      'Garantie de 1 an sur les pièces et la main-d\'œuvre (hors vandalisme)',
+      'En cas d\'annulation d\'une commande d\'un jeu déjà en production, le client s\'engage à verser une somme forfaitaire de 75 % du prix de vente.',
+      'Toute modification ultérieure de la commande entraînon des frais supplémentaires sera à la charge du client.',
+      'Si le sol souple est installé par Spi Global Play, le client s\'engage à rénover entièrement la zone avant la réalisation des travaux (nettoyage, enlèvement de l\'ancien sol, nivellement et finitions diverses).',
+      'Le site mis en œuvre et validé par le client doit être identique au site réel lors de l\'arrivée de l\'équipe d\'installation. Si ce n\'est pas le cas, des frais supplémentaires seront à la charge du client.',
+      'Les conditions générales sont disponibles sur demande.',
+      'Les équipes d\'installation sont agréées par Spi Global Play retail.'
+    ],
+    mois: ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'],
+    airetype_ext: 'extérieure',
+    airetype_int: 'intérieure',
+    sol_label: 'Sol souple à poser dans l\'aire de jeux',
+    insp_label: 'Visite d\'inspection sur site',
+    projet_label: 'Projet n° : ',
+    dim_label: 'Dim. : ', dim_unit: ' mm',
+    cap_label: 'Cap. : ', cap_unit: ' enfants',
+    age_label: 'Age : ', age_unit: ' ans'
+  },
+  en: {
+    contact_default: 'Dear Sir or Madam,',
+    concerne_prefix: 'Price offer for a playground of type ',
+    concerne_label: 'Subject: ',
+    intro: function(at,ref,brand,lieu,pays){ return 'We are pleased to provide you with our best price offer for the '+at+' playground of type '+ref+' for your restaurant '+brand+' located in '+lieu+(pays?', '+pays:'')+'.'; },
+    photo_placeholder: 'Product photo',
+    prix_base: 'Playground price',
+    options_label: 'Option(s):',
+    incluse: 'Included',
+    inclus: 'Included',
+    remise: 'Commercial discount:',
+    prix_total: 'TOTAL PRICE* :',
+    note_be: '* Price excl. VAT',
+    note_eu: '* VAT exempt – intra-community delivery',
+    note_noneu: '* VAT exempt – delivery outside European Union',
+    note_noinsp: ' – On-site inspection not included',
+    livre_avec: 'Playground delivered with :',
+    livraison_items: [
+      'Plans with different views and layout',
+      'Technical, maintenance and cleaning manual',
+      'Certificate of conformity issued by an accredited body'
+    ],
+    sans_sol: 'Without soft flooring in the playground area',
+    info_gen: 'General information :',
+    adresse_rest: 'Restaurant address:',
+    client_franchise: '•  Franchisee client:',
+    chef_projet: '•  Client project manager:',
+    delai_titre: 'Delivery lead time :',
+    delai_p1: 'Delivery lead time after receipt of this signed offer, ',
+    delai_bold: 'layout validated for agreement',
+    delai_p3: 'and payment of 50% upon order: ',
+    delai_default: 'from 45 working days',
+    delai_map: {
+      'à partir de 30 jours ouvrés': 'from 30 working days',
+      'à partir de 40 jours ouvrés': 'from 40 working days',
+      'à partir de 45 jours ouvrés': 'from 45 working days'
+    },
+    duree_label: 'Installation duration: ',
+    duree_default: '3-4 days',
+    duree_map: {'3-4 jours':'3-4 days','4-5 jours':'4-5 days','5-7 jours':'5-7 days','8-10 jours':'8-10 days'},
+    date_debut: '• Desired installation start date: ',
+    date_fin: '• Desired installation end date: ',
+    paie_label: 'Payment terms: ',
+    paiement_map: {
+      '50 % à la commande, 50 % à la fin de l\'installation.': '50% upon order, 50% upon completion of installation.',
+      'Paiement à 45 jours fin de mois.': 'Payment within 45 days end of month.',
+      'Paiement à 30 jours date de facture.': 'Payment within 30 days from invoice date.'
+    },
+    pv: 'On the last day of installation, the client agrees to sign the reception report and the technical manual.',
+    validite_label: 'Offer validity: ',
+    validite_default: '3 months',
+    engagement: 'This offer must be signed by the authorized client and returned before the start of playground production.',
+    nous_restons: 'We remain at your disposal for any further information.',
+    spi_sig: 'SPI Global Play Retail sa',
+    pour_accord: 'For agreement,',
+    date_sig: 'Date:',
+    nom_left: 'Name: ',
+    nom_right: 'Name:',
+    sig_cachet: 'Signature and stamp',
+    note2: '* Please note that we cannot be held responsible for delays caused by customs procedures, carrier issues or delays from our suppliers. Although we do our best to ship your items within the specified timeframes, circumstances beyond our control may cause unforeseen delays.',
+    info_comp: 'Additional information :',
+    cgv: [
+      '1-year warranty on parts and labour (excluding vandalism)',
+      'In the event of cancellation of an order already in production, the client agrees to pay a flat fee of 75% of the sale price.',
+      'Any subsequent modification of the order resulting in additional costs shall be borne by the client.',
+      'If the soft flooring is installed by Spi Global Play, the client agrees to fully renovate the area before the work is carried out (cleaning, removal of old flooring, levelling and various finishes).',
+      'The site validated by the client must be identical to the actual site upon arrival of the installation team. If this is not the case, additional costs shall be borne by the client.',
+      'General terms and conditions are available upon request.',
+      'Installation teams are approved by Spi Global Play retail.'
+    ],
+    mois: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+    airetype_ext: 'outdoor',
+    airetype_int: 'indoor',
+    sol_label: 'Soft flooring in the playground area',
+    insp_label: 'On-site inspection',
+    projet_label: 'Project no.: ',
+    dim_label: 'Dim.: ', dim_unit: ' mm',
+    cap_label: 'Cap.: ', cap_unit: ' children',
+    age_label: 'Age: ', age_unit: ' years'
+  }
+};
+
 // ── Génération PDF ──
 document.getElementById('btnPDF').addEventListener('click', async function() {
   var msg=document.getElementById('msg');
@@ -874,6 +1039,8 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     if(!jsPDF){msg.className='msg err';msg.textContent='Bibliothèque PDF non chargée.';return;}
 
     var doc=new jsPDF({unit:'mm',format:'a4'});
+    var T=LANGS[g('lang')||'fr'];
+    function noColon(s){return s.replace(/ :$/,'').replace(/:$/,'');}
     var W=210,H=297,ml=20,mr=20,cw=W-ml-mr;
     var ORANGE=[253,156,0],GRIS=[26,26,26],GRIS_MED=[100,100,100],FOND_CLAIR=[248,248,246],VERT=[45,45,45];
 
@@ -942,8 +1109,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     }
     // Lieu + date
     var dv=g('o_date'),oDate='';
-    var moisFr=['janvier','f\u00e9vrier','mars','avril','mai','juin','juillet','ao\u00fbt','septembre','octobre','novembre','d\u00e9cembre'];
-    if(dv){var pts=dv.split('-');oDate=parseInt(pts[2])+' '+moisFr[parseInt(pts[1])-1]+' '+pts[0];}
+    if(dv){var pts=dv.split('-');oDate=parseInt(pts[2])+' '+T.mois[parseInt(pts[1])-1]+' '+pts[0];}
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
     doc.text((g('o_lieu')||'Herstal')+', '+(oDate||'…')+'.', adrRight, y, {align:'right'});
     y+=10;
@@ -951,11 +1117,12 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     // Madame, Monsieur
     y=Math.max(y,42); // toujours sous le logo (8+29+3mm)
     doc.setFont('helvetica','normal'); doc.setFontSize(10.5); sc(GRIS);
-    doc.text(g('c_contact')||'Madame, Monsieur,',ml,y); y+=9;
+    var contactVal=g('c_contact'); if(contactVal&&!contactVal.endsWith(',')) contactVal+=',';
+    doc.text(contactVal||T.contact_default,ml,y); y+=9;
 
     // Concerne (souligné)
-    var refTitle='Offre de prix pour une aire de jeux de type '+(g('o_ref')||'—');
-    var concerne='Concerne : '+refTitle;
+    var refTitle=T.concerne_prefix+(g('o_ref')||'—');
+    var concerne=T.concerne_label+refTitle;
     doc.setFont('helvetica','bold'); doc.setFontSize(10.5); sc(GRIS);
     var cLines=doc.splitTextToSize(concerne,cw);
     var lineSpC=5.5;
@@ -972,7 +1139,8 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     // Intro
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
     var airetype=g('aire_type')||'extérieure';
-    var intro='Nous avons le plaisir de vous communiquer notre meilleure offre de prix pour l\'aire de jeu '+airetype+' de type '+(g('o_ref')||'—')+' pour votre restaurant '+(g('c_brand')||'……')+' situé à '+(g('c_lieu')||'……')+(g('r_pays')?', '+g('r_pays'):'')+'.';
+    var aireTypeDisplay=(airetype==='intérieure')?T.airetype_int:T.airetype_ext;
+    var intro=T.intro(aireTypeDisplay,g('o_ref')||'—',g('c_brand')||'……',g('c_lieu')||'……',g('r_pays'));
     var introL=doc.splitTextToSize(intro,cw);
     doc.text(introL,ml,y);
     y+=introL.length*5.5+8;
@@ -984,7 +1152,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var solMode=getSolMode();
     var solPrixVal=(solChecked&&solMode==='prix')?(parseFloat(g('sol_prix'))||0):0;
     var inspChecked=document.getElementById('insp_ck').checked;
-    var allOpts=opts.slice(); if(solChecked) allOpts.push({label:'Sol souple à poser dans l\'aire de jeux',prix:solMode==='inclus'?'inclus':String(solPrixVal)}); if(inspChecked) allOpts.push({label:'Visite d\'inspection sur site',prix:'inclus'});
+    var allOpts=opts.slice(); if(solChecked) allOpts.push({label:T.sol_label,prix:solMode==='inclus'?'inclus':String(solPrixVal)}); if(inspChecked) allOpts.push({label:T.insp_label,prix:'inclus'});
     var remCk2=document.getElementById('remise_ck').checked;
     var remVal2=remCk2?(parseFloat(document.getElementById('remise_val').value)||0):0;
     var sousTotal2=base+sumOpts2+solPrixVal;
@@ -995,9 +1163,9 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var TOTAL_H=16;
     var dim=g('dim'),capa=g('capa'),age=g('age');
     var specLines=[];
-    if(dim) specLines.push('Dim. : '+dim.replace(/\s*mm\s*$/i,'').trim()+' mm');
-    if(capa) specLines.push('Cap. : '+capa.replace(/\s*enfants?\s*$/i,'').trim()+' enfants');
-    if(age) specLines.push('Age : '+age.replace(/\s*ans\s*$/i,'').trim()+' ans');
+    if(dim) specLines.push(T.dim_label+dim.replace(/\s*mm\s*$/i,'').trim()+T.dim_unit);
+    if(capa) specLines.push(T.cap_label+capa.replace(/\s*enfants?\s*$/i,'').trim()+T.cap_unit);
+    if(age) specLines.push(T.age_label+age.replace(/\s*ans\s*$/i,'').trim()+T.age_unit);
     var SPEC_H=specLines.length>0?specLines.length*5+4:0;
     var leftW=cw*0.43, rightW=cw*0.57-2, rightX=ml+leftW+2;
     // Hauteur réelle du contenu droit : en-tête + prix de base + inclus + options
@@ -1024,7 +1192,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     } else {
       sf([240,240,238]); doc.rect(ml+1,tableTop+1,leftW-2,tableH-2,'F');
       doc.setFont('helvetica','italic'); doc.setFontSize(8); sc([180,180,180]);
-      doc.text('Photo du produit',ml+leftW/2,tableTop+tableH/2,{align:'center'});
+      doc.text(T.photo_placeholder,ml+leftW/2,tableTop+tableH/2,{align:'center'});
     }
 
     // En-tête droite (titre produit, fond gris clair)
@@ -1045,7 +1213,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var ry=tableTop+12;
     // Prix de base
     doc.setFont('helvetica','normal'); doc.setFontSize(9.5); sc(GRIS);
-    doc.text('Prix de l\'aire de jeux', rightX+3, ry+4);
+    doc.text(T.prix_base, rightX+3, ry+4);
     doc.setFont('helvetica','normal'); sc(GRIS);
     // Prix aligné à droite, DANS le tableau
     doc.text(fmtPDF(base)+' \u20ac', rightX+rightW-3, ry+4, {align:'right'});
@@ -1056,13 +1224,13 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     // Option(s) incluses
     if(inclus.length){
       doc.setFont('helvetica','normal'); doc.setFontSize(9); sc(GRIS);
-      doc.text('Option(s):', rightX+3, ry+3); ry+=6;
+      doc.text(T.options_label, rightX+3, ry+3); ry+=6;
       inclus.forEach(function(it){
         var itL=doc.splitTextToSize('• '+it, rightW-28);
         doc.setFont('helvetica','normal'); doc.setFontSize(8.5); sc(GRIS);
         itL.forEach(function(line,li){
           doc.text(line, rightX+5, ry+3);
-          if(li===0) doc.text('Incluse', rightX+rightW-3, ry+3, {align:'right'});
+          if(li===0) doc.text(T.incluse, rightX+rightW-3, ry+3, {align:'right'});
           ry+=5;
         });
         ry+=1;
@@ -1076,7 +1244,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
       doc.setFont('helvetica','normal'); doc.setFontSize(8.5); sc(GRIS);
       optL.forEach(function(line,li){
         doc.text(line, rightX+5, ry+3);
-        if(li===0) doc.text(o.prix==='inclus'?'Inclus':fmtPDF(p)+' €', rightX+rightW-3, ry+3, {align:'right'});
+        if(li===0) doc.text(o.prix==='inclus'?T.inclus:fmtPDF(p)+' €', rightX+rightW-3, ry+3, {align:'right'});
         ry+=5;
       });
       ry+=1;
@@ -1094,7 +1262,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     // ── Remise commerciale ──
     if(remCk2&&remVal2>0){
       doc.setFont('helvetica','normal'); doc.setFontSize(8.5); sc(GRIS);
-      var remLabel='Remise commerciale :';
+      var remLabel=T.remise;
       doc.text(remLabel,rightX+3,ry+3);
       doc.text('-'+fmtPDF(remVal2)+' €',rightX+rightW-3,ry+3,{align:'right'});
       ry+=6;
@@ -1107,7 +1275,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     sf([215,240,215]); doc.rect(pTX,totalY,pTW,BOTTOM_H,'F');
     var priceMidY=totalY+BOTTOM_H/2;
     doc.setFont('helvetica','bold'); doc.setFontSize(11); sc(GRIS);
-    doc.text('PRIX TOTAL* :', pTX+pTW/2, priceMidY-1.5, {align:'center'});
+    doc.text(T.prix_total, pTX+pTW/2, priceMidY-1.5, {align:'center'});
     doc.text(fmtPDF(total)+' €', pTX+pTW/2, priceMidY+5, {align:'center'});
 
     // ── Specs techniques (gauche, sous l'image, 3 lignes centrées) ──
@@ -1130,16 +1298,18 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     // ── Note prix (sous la case PRIX TOTAL, colonne droite) ──
     var noteY2=tableTop+tableH+BOTTOM_H+2;
     doc.setFont('helvetica','italic'); doc.setFontSize(7); sc(GRIS_MED);
-    var dest=g('dest'); var insp2=document.getElementById('insp_ck').checked; var noteText=(dest==='BE')?'* Prix hors TVA':'* Prix exempt de TVA'; if(dest==='EU') noteText+=' – livraison intracommunautaire'; else if(dest==='NON-EU') noteText+=' – livraison hors Union Européenne'; if(!insp2) noteText+=' – Visite d\'inspection sur site non incluse';
+    var dest=g('dest'); var insp2=document.getElementById('insp_ck').checked;
+    var noteText=(dest==='BE')?T.note_be:(dest==='EU')?T.note_eu:T.note_noneu;
+    if(!insp2) noteText+=T.note_noinsp;
     var noteLines=doc.splitTextToSize(noteText,pTW);
     doc.text(noteLines,pTX,noteY2+3);
 
     y=tableTop+tableH+BOTTOM_H+noteLines.length*4+20;
     // Livré avec (contenu fixe)
-    var livraisonItems=['Plans de différentes vues et implantation','Manuel technique, d\'entretien et de nettoyage','Attestation de conformité délivrée par un organisme référencé'];
+    var livraisonItems=T.livraison_items;
     doc.setFont('helvetica','bold'); doc.setFontSize(10); sc(GRIS);
-    doc.text('Aire de jeux livrée avec :',W/2,y,{align:'center'});
-    var lvW=doc.getTextWidth('Aire de jeux livrée avec :');
+    doc.text(T.livre_avec,W/2,y,{align:'center'});
+    var lvW=doc.getTextWidth(noColon(T.livre_avec));
     doc.setDrawColor(26,26,26); doc.setLineWidth(0.3);
     doc.line(W/2-lvW/2,y+1.5,W/2+lvW/2,y+1.5); y+=9;
     livraisonItems.forEach(function(it){
@@ -1158,7 +1328,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
       doc.setFont('helvetica','bold'); doc.setFontSize(9.5); sc(GRIS);
       doc.setFillColor(GRIS[0],GRIS[1],GRIS[2]);
       doc.lines([[0,3.5],[4.5,-1.75],[-4.5,-1.75]],ml+1,y-2,[1,1],'F');
-      var ssTxt='Sans sol souple à poser dans l\'aire de jeux';
+      var ssTxt=T.sans_sol;
       var ssL=doc.splitTextToSize(ssTxt,cw-10);
       doc.text(ssL,ml+8,y);
       var ssW=doc.getTextWidth(ssL[0]);
@@ -1170,14 +1340,14 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     doc.addPage();
     drawLogo(doc);
     drawFooter(doc,2);
-    if(photoDataURL){var pe2=photoDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';var maxW2=72,maxH2=42,ar2=photoAR||1.5,_pw2,_ph2;if(ar2>=maxW2/maxH2){_pw2=maxW2;_ph2=maxW2/ar2;}else{_ph2=maxH2;_pw2=maxH2*ar2;}try{doc.addImage(photoDataURL,pe2,W-mr-_pw2-10,24,_pw2,_ph2);}catch(e){}}
+    if(photoDataURL){var pe2=photoDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';var maxW2=58,maxH2=34,ar2=photoAR||1.5,_pw2,_ph2;if(ar2>=maxW2/maxH2){_pw2=maxW2;_ph2=maxW2/ar2;}else{_ph2=maxH2;_pw2=maxH2*ar2;}try{doc.addImage(photoDataURL,pe2,W-mr-_pw2-10,24,_pw2,_ph2);}catch(e){}}
     y=50;
 
     // Titre "Informations générales"
     drawInfoIcon(doc,ml+3.5,y-2);
     doc.setFont('helvetica','bold'); doc.setFontSize(10); sc(GRIS);
-    doc.text('Informations générales :',ml+9,y);
-    var titreW=doc.getTextWidth('Informations générales :');
+    doc.text(T.info_gen,ml+9,y);
+    var titreW=doc.getTextWidth(noColon(T.info_gen));
     doc.setDrawColor(26,26,26); doc.setLineWidth(0.4);
     doc.line(ml+9,y+1.5,ml+9+titreW,y+1.5);
     y+=9;
@@ -1194,8 +1364,8 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
       y+=7;
     }
 
-    if(g('o_projet')) puce('Projet n\u00b0 : '+g('o_projet'),'');
-    puce('Adresse du restaurant :','');
+    if(g('o_projet')) puce(T.projet_label+g('o_projet'),'');
+    puce(T.adresse_rest,'');
     y+=2;
     // Adresse centrée en gras
     doc.setFont('helvetica','bold'); doc.setFontSize(10); sc(GRIS);
@@ -1207,13 +1377,13 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
 
     // Franchisé + Chef de projet : valeurs alignées sur le label le plus long
     doc.setFont('helvetica','normal'); doc.setFontSize(9.5);
-    var valX=ml+3+doc.getTextWidth('•  Chef de projet client :')+3;
-    sc(GRIS); doc.text('•  Client franchisé :',ml+3,y);
+    var valX=ml+3+doc.getTextWidth(T.chef_projet)+3;
+    sc(GRIS); doc.text(T.client_franchise,ml+3,y);
     doc.setFont('helvetica','bold'); sc(GRIS);
     doc.text(g('c_franchise')||'……………………',valX,y);
     y+=7;
     doc.setFont('helvetica','normal'); doc.setFontSize(9.5); sc(GRIS);
-    doc.text('•  Chef de projet client :',ml+3,y);
+    doc.text(T.chef_projet,ml+3,y);
     doc.setFont('helvetica','bold'); sc(GRIS);
     doc.text(g('c_chef')||'……………………',valX,y);
     y+=10;
@@ -1221,50 +1391,59 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     // Sous-titre Delai avec icone
     doc.setFont('helvetica','bold'); doc.setFontSize(10); sc(GRIS);
     drawTruckIcon(doc,ml+3.5,y-2);
-    doc.text('Délai de livraison :',ml+9,y);
-    var dlW=doc.getTextWidth('Délai de livraison :');
+    doc.text(T.delai_titre,ml+9,y);
+    var dlW=doc.getTextWidth(noColon(T.delai_titre));
     doc.setDrawColor(26,26,26); doc.setLineWidth(0.3); doc.line(ml+9,y+1.5,ml+9+dlW,y+1.5);
     y+=8;
-    // Delai de livraison - 2 lignes
+    // Delai de livraison - 2 lignes (conditionnel selon modalité de paiement)
+    var is5050=g('paiement').indexOf('50 % à la commande')!==-1;
     doc.setFont('helvetica','normal'); doc.setFontSize(9.5); sc(GRIS);
-    var dPart1='Délai de livraison après réception de cette offre signée, ';
+    var dPart1=T.delai_p1;
     doc.text(dPart1,ml,y);
     var dP1W=doc.getTextWidth(dPart1);
     doc.setFont('helvetica','bold');
-    doc.text('implantation validée pour accord',ml+dP1W,y); y+=5.5;
+    doc.text(T.delai_bold,ml+dP1W,y); y+=5.5;
     doc.setFont('helvetica','normal');
-    var dPart3='et paiement à 50 % à la commande : ';
-    doc.text(dPart3,ml,y);
-    var dP3W=doc.getTextWidth(dPart3);
-    doc.setFont('helvetica','bold');
-    doc.text((g('delai')||'à partir de 45 jours ouvrés')+'*',ml+dP3W,y); y+=10;
-    doc.text('Dur\u00e9e d\'installation : '+(g('duree_install')||'3-4 jours'),ml,y); y+=8;
-    doc.text('\u2022 Date de d\u00e9but d\'installation souhait\u00e9e : '+(g('date_debut')||'\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026'),ml+5,y); y+=6;
-    doc.text('\u2022 Date de fin d\'installation souhait\u00e9e : '+(g('date_fin')||'\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026'),ml+5,y); y+=10;
+    var delaiVal=T.delai_map[g('delai')]||g('delai')||T.delai_default;
+    if(is5050){
+      var dPart3=T.delai_p3;
+      doc.text(dPart3,ml,y);
+      var dP3W=doc.getTextWidth(dPart3);
+      doc.setFont('helvetica','bold');
+      doc.text(delaiVal+'*',ml+dP3W,y);
+    } else {
+      doc.setFont('helvetica','bold');
+      doc.text(delaiVal+'*',ml,y);
+    }
+    y+=10;
+    doc.text(T.duree_label+(T.duree_map[g('duree_install')]||g('duree_install')||T.duree_default),ml,y); y+=8;
+    doc.text(T.date_debut+(g('date_debut')||'\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026'),ml+5,y); y+=6;
+    doc.text(T.date_fin+(g('date_fin')||'\u2026\u2026\u2026\u2026\u2026\u2026\u2026\u2026'),ml+5,y); y+=10;
 
     // Modalites de paiement : titre + valeur sur la même ligne
     doc.setFont('helvetica','bold'); doc.setFontSize(10); sc(GRIS);
     drawBillsIcon(doc,ml+3.5,y-2);
-    var paieLabel='Modalités de paiement : ';
+    var paieLabel=T.paie_label;
     doc.text(paieLabel,ml+9,y);
     var paieLW=doc.getTextWidth(paieLabel);
     doc.setDrawColor(26,26,26); doc.setLineWidth(0.3); doc.line(ml+9,y+1.5,ml+9+paieLW,y+1.5);
-    doc.text(g('paiement')||'50 % à la commande, 50 % à la fin de l\'installation.',ml+9+paieLW,y);
+    var paiementDisplay=T.paiement_map[g('paiement')]||g('paiement')||T.paiement_map['50 % à la commande, 50 % à la fin de l\'installation.'];
+    doc.text(paiementDisplay,ml+9+paieLW,y);
     y+=7;
     doc.setFont('helvetica','normal'); doc.setFontSize(9.5); sc(GRIS);
-    var pvL=doc.splitTextToSize('Le dernier jour de l\'installation, le client s\'engage à signer le procès-verbal de réception de l\'aire de jeux et le manuel technique.',cw);
+    var pvL=doc.splitTextToSize(T.pv,cw);
     doc.text(pvL,ml,y); y+=pvL.length*5+3;
 
     doc.setFont('helvetica','bold'); doc.setFontSize(10.5); sc(GRIS);
-    doc.text('Validit\u00e9 de cette offre : '+(g('validite')||'3 mois'),ml,y); y+=8;
+    doc.text(T.validite_label+(g('validite')||T.validite_default),ml,y); y+=8;
 
     doc.setFont('helvetica','bold'); doc.setFontSize(10); sc(GRIS);
-    var engL=doc.splitTextToSize('Cette offre doit \u00eatre sign\u00e9e par le client habilit\u00e9 et valid\u00e9e en retour avant le d\u00e9but de la production de l\'aire de jeux.',cw);
+    var engL=doc.splitTextToSize(T.engagement,cw);
     doc.text(engL,ml,y); y+=engL.length*5.5+8;
 
     // Pré-calcul de la note pour réserver la place en bas
     doc.setFont('helvetica','normal'); doc.setFontSize(7); sc([120,120,120]);
-    var noteText2='* Veuillez noter que nous ne pouvons être tenus responsables des retards causés par les procédures douanières, les problèmes avec le transporteur ou les retards de nos fournisseurs. Bien que nous fassions tout notre possible pour expédier vos articles dans les délais spécifiés, des circonstances indépendantes de notre volonté peuvent entraîner des retards imprévus.';
+    var noteText2=T.note2;
     var noteL=doc.splitTextToSize(noteText2,cw);
     var noteBlockH=noteL.length*3+4;
     var noteYstart=H-18-noteBlockH;
@@ -1273,19 +1452,19 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var sigImgH=signDataURL?Math.round(sigMaxW/(signAR||3)):0;
     y=Math.min(y, noteYstart-(50+sigImgH));
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
-    doc.text('Nous restons à votre disposition pour tout renseignement complémentaire.',ml,y); y+=14;
+    doc.text(T.nous_restons,ml,y); y+=14;
 
     // Signatures
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
     var sigRX=ml+cw*0.52;
-    doc.text('SPI Global Play Retail sa',ml,y); doc.text('Pour accord,',sigRX,y); y+=6;
+    doc.text(T.spi_sig,ml,y); doc.text(T.pour_accord,sigRX,y); y+=6;
     var signDateHide=document.getElementById('sign_date_hide').checked;
     var signDateVal=(!signDateHide)?g('c_sign_date'):''; var signDateStr='';
     if(signDateVal){var sdp=signDateVal.split('-');signDateStr=' '+parseInt(sdp[2])+'/'+(sdp[1])+'/'+sdp[0];}
-    doc.text('Date :'+signDateStr,ml,y); doc.text('Date :',sigRX,y); y+=6;
+    doc.text(T.date_sig+signDateStr,ml,y); doc.text(T.date_sig,sigRX,y); y+=6;
     var nomCommercial=g('c_commercial');
-    doc.text('Nom : '+nomCommercial,ml,y); doc.text('Nom :',sigRX,y); y+=6;
-    doc.text('Signature et cachet',ml,y); doc.text('Signature et cachet',sigRX,y);
+    doc.text(T.nom_left+nomCommercial,ml,y); doc.text(T.nom_right,sigRX,y); y+=6;
+    doc.text(T.sig_cachet,ml,y); doc.text(T.sig_cachet,sigRX,y);
     if(signDataURL){
       try{
         var sExt=signDataURL.indexOf('image/jpeg')>=0?'JPEG':'PNG';
@@ -1306,20 +1485,12 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
 
     drawInfoIcon(doc,ml+3.5,y-2);
     doc.setFont('helvetica','bold'); doc.setFontSize(10); sc(GRIS);
-    doc.text('Informations complémentaires :',ml+9,y);
-    var icW=doc.getTextWidth('Informations complémentaires :');
+    doc.text(T.info_comp,ml+9,y);
+    var icW=doc.getTextWidth(noColon(T.info_comp));
     doc.setDrawColor(26,26,26); doc.setLineWidth(0.4); doc.line(ml+9,y+1.5,ml+9+icW,y+1.5);
     y+=10;
     doc.setFont('helvetica','normal'); doc.setFontSize(9.5); sc(GRIS);
-    var cgv=[
-      'Garantie de 1 an sur les pi\u00e8ces et la main-d\'\u0153uvre (hors vandalisme)',
-      'En cas d\'annulation d\'une commande d\'un jeu d\u00e9j\u00e0 en production, le client s\'engage \u00e0 verser une somme forfaitaire de 75 % du prix de vente.',
-      'Toute modification ult\u00e9rieure de la commande entra\u00eenon des frais suppl\u00e9mentaires sera \u00e0 la charge du client.',
-      'Si le sol souple est install\u00e9 par Spi Global Play, le client s\'engage \u00e0 r\u00e9nover enti\u00e8rement la zone avant la r\u00e9alisation des travaux (nettoyage, enl\u00e8vement de l\'ancien sol, nivellement et finitions diverses).',
-      'Le site mis en \u0153uvre et valid\u00e9 par le client doit \u00eatre identique au site r\u00e9el lors de l\'arriv\u00e9e de l\'\u00e9quipe d\'installation. Si ce n\'est pas le cas, des frais suppl\u00e9mentaires seront \u00e0 la charge du client.',
-      'Les conditions g\u00e9n\u00e9rales sont disponibles sur demande.',
-      'Les \u00e9quipes d\'installation sont agr\u00e9\u00e9es par Spi Global Play retail.'
-    ];
+    var cgv=T.cgv;
     cgv.forEach(function(item){
       var lines=doc.splitTextToSize('\u2022   '+item,cw-6);
       doc.setFont('helvetica','normal'); doc.setFontSize(9.5); sc(GRIS);
