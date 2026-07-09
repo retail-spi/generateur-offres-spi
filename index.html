@@ -488,6 +488,7 @@ textarea{resize:vertical;min-height:52px}
       <button class="lang-btn active" data-lang="fr" onclick="switchLang('fr')">🇫🇷 FR</button>
       <button class="lang-btn" data-lang="en" onclick="switchLang('en')">🇬🇧 EN</button>
       <button class="lang-btn" data-lang="nl" onclick="switchLang('nl')">🇳🇱 NL</button>
+      <button class="lang-btn" data-lang="de" onclick="switchLang('de')">🇩🇪 DE</button>
     </div>
   </div>
 
@@ -527,6 +528,7 @@ textarea{resize:vertical;min-height:52px}
         <option value="fr">🇫🇷 Français</option>
         <option value="en">🇬🇧 English</option>
         <option value="nl">🇳🇱 Nederlands</option>
+        <option value="de">🇩🇪 Deutsch</option>
       </select></div>
     </div>
   </div>
@@ -1068,6 +1070,65 @@ var FORM_LANGS = {
     msg_success: '✅ PDF succesvol aangemaakt!',
     msg_error_lib: 'PDF-bibliotheek niet geladen.',
     msg_error_prefix: 'Fout: '
+  },
+  de: {
+    app_title: 'Generator kommerzieller Angebote — SPI Global Play Retail',
+    app_sub: 'Felder ausfüllen · Auf „PDF erstellen" klicken für Ihr offizielles Angebot',
+    login_sub: 'Zugang nur für autorisierte Verkäufer',
+    login_pwd_ph: 'Passwort', login_btn: 'Anmelden', login_err: 'Falsches Passwort.',
+    card_client: 'Kunde / Empfänger', card_offer: 'Angebotsinformationen',
+    card_photo: 'Produktfoto (optional)', card_price: 'Preistabelle',
+    card_specs: 'Technische Daten', card_planning: 'Planung & Bedingungen',
+    card_commercial: 'SPI Global Play Vertrieb',
+    c_brand: 'Name des Restaurants (Marke)', c_lieu: 'Stadt des Restaurants',
+    r_pays: 'Land', c_groupe: 'Firmenname',
+    c_adresse: 'Firmenadresse (Kopfzeile Seite 1)',
+    r_adresse: 'Restaurantadresse (Seite 2 + Einleitung)',
+    c_contact: 'Kontaktperson (optional)',
+    c_contact_ph: 'z.B. Frau Müller, Herr Schmidt…',
+    c_tva: 'Kundenumsatzsteuer-ID', c_franchise: 'Projektmanager Kunde',
+    c_chef: 'Ausführender Projektleiter', paiement_label: 'Zahlungsbedingungen',
+    paiement_50: '50% bei Bestellung + 50% bei Abschluss',
+    paiement_45: '45 Tage Monatsende', paiement_30: '30 Tage nach Rechnungsdatum',
+    o_lieu: 'Ausstellungsort', o_date: 'Datum', o_projet: 'Projektnummer',
+    o_ref: 'Referenz / Produkttyp (Angebotstitel)',
+    aire_type_label: 'Spielplatztyp', aire_int: 'Innenspielplatz', aire_ext: 'Außenspielplatz',
+    lang_label: 'PDF-Sprache',
+    photo_zone_p: '🖼️ Klicken um ein Foto hochzuladen<br><small>oder <strong>Ctrl+V</strong> aus der Zwischenablage einfügen</small>',
+    photo_del: '× Foto entfernen',
+    photo_pasted: '✅ Foto eingefügt<br><small>Ctrl+V zum Ändern</small>',
+    p_base: 'Grundpreis des Spielplatzes (€ zzgl. MwSt.)',
+    p_inclus: 'Im Grundpreis enthalten (kommagetrennt)',
+    opts_header: 'Zusätzliche Optionen',
+    opt_th_opt: 'Option', opt_th_prix: 'Preis zzgl. MwSt. (€)', opt_th_total: 'Gesamt',
+    opt_lbl_ph: 'Innen-/Außenbeleuchtung', opt_add_btn: '+ Option hinzufügen',
+    p_remarques: 'Anmerkung / Freitext (Tabelle Seite 1)',
+    remise_label: 'Handelsrabatt', remise_suffix: '€ zzgl. MwSt. Rabatt',
+    sol_label: 'Fallschutzbelag im Angebot aufnehmen',
+    sol_inclus: 'Inklusive', sol_prix_radio: 'Preis angeben',
+    sol_prix_label: 'Preis Fallschutzbelag (€ zzgl. MwSt.)',
+    insp_label: 'Standortinspektion im Angebot aufnehmen',
+    t_base: 'Grundpreis', t_opts: 'Optionen', t_sol: 'Fallschutzbelag',
+    t_remise: 'Rabatt', t_total: 'GESAMTPREIS ZZGL. MWST. *',
+    dest_be: 'Belgien', dest_eu: 'Europäische Union', dest_noneu: 'Außerhalb EU',
+    dim: 'Abmessungen (L x B x H mm)', capa: 'Kapazität', age: 'Altersgruppe',
+    delai_label: 'Lieferzeit',
+    delai_30: '30 Werktage', delai_40: '40 Werktage', delai_45: '45 Werktage',
+    duree_label: 'Installationsdauer',
+    duree_34: '3-4 Tage', duree_45: '4-5 Tage', duree_57: '5-7 Tage', duree_810: '8-10 Tage',
+    date_debut: 'Gewünschter Installationsbeginn', date_fin: 'Gewünschtes Installationsende',
+    validite_label: 'Gültigkeit des Angebots', validite_default: '3 Monate',
+    c_commercial: 'Name des Verkäufers', c_commercial_ph: 'Vorname Nachname',
+    sign_date: 'Unterschriftsdatum', sign_date_hide: 'Datum nicht angeben',
+    sign_label: 'Unterschrift des Verkäufers',
+    sign_zone_p: '✍️ Klicken um eine Unterschrift hochzuladen<br><small>oder <strong>Ctrl+V</strong> nach dem Klicken hier</small>',
+    sign_del: '× Unterschrift entfernen',
+    sign_pasted: '✅ Unterschrift eingefügt<br><small>Ctrl+V zum Ändern</small>',
+    btn_pdf: '⬇ Offizielles PDF erstellen',
+    msg_generating: 'PDF wird erstellt…',
+    msg_success: '✅ PDF erfolgreich erstellt!',
+    msg_error_lib: 'PDF-Bibliothek nicht geladen.',
+    msg_error_prefix: 'Fehler: '
   }
 };
 
@@ -1094,7 +1155,7 @@ function setFormLang(lang) {
   document.querySelectorAll('#opts input[data-f="label"]').forEach(function(el) {
     el.placeholder = FL.opt_lbl_ph;
   });
-  var knownValidite = ['3 mois','3 months','3 maanden'];
+  var knownValidite = ['3 mois','3 months','3 maanden','3 Monate'];
   var velEl = document.getElementById('validite');
   if(velEl && knownValidite.indexOf(velEl.value.trim()) !== -1) velEl.value = FL.validite_default;
   updateDestNote();
@@ -1344,6 +1405,87 @@ LANGS.nl = {
   dim_label: 'Afm.: ', dim_unit: ' mm',
   cap_label: 'Cap.: ', cap_unit: ' kinderen',
   age_label: 'Leeftijd: ', age_unit: ' jaar'
+};
+
+LANGS.de = {
+  contact_default: 'Sehr geehrte Damen und Herren,',
+  concerne_prefix: 'Preisangebot für einen Spielplatz vom Typ ',
+  concerne_label: 'Betreff: ',
+  intro: function(at,ref,brand,lieu,pays){ return 'Wir freuen uns, Ihnen unser bestes Preisangebot für den '+at+' vom Typ '+ref+' für Ihr Restaurant '+brand+' in '+lieu+(pays?', '+pays:'')+' zu unterbreiten.'; },
+  photo_placeholder: 'Produktfoto',
+  prix_base: 'Preis des Spielplatzes',
+  options_label: 'Option(en):',
+  incluse: 'Inklusive',
+  inclus: 'Inklusive',
+  remise: 'Handelsrabatt:',
+  prix_total: 'GESAMTPREIS* :',
+  note_be: '* Preis zzgl. MwSt.',
+  note_eu: '* MwSt.-befreit – innergemeinschaftliche Lieferung',
+  note_noneu: '* MwSt.-befreit – Lieferung außerhalb der Europäischen Union',
+  note_noinsp: ' – Standortinspektion nicht inbegriffen',
+  livre_avec: 'Spielplatz geliefert mit :',
+  livraison_items: [
+    'Pläne mit verschiedenen Ansichten und Implantation',
+    'Technisches Handbuch für Wartung und Reinigung',
+    'Konformitätsbescheinigung einer anerkannten Prüfstelle'
+  ],
+  sans_sol: 'Ohne Fallschutzbelag im Spielbereich',
+  info_gen: 'Allgemeine Informationen :',
+  adresse_rest: 'Adresse des Restaurants:',
+  client_franchise: '•  Franchisenehmer:',
+  chef_projet: '•  Projektverantwortlicher Kunde:',
+  delai_titre: 'Lieferzeit :',
+  delai_p1: 'Lieferzeit nach Eingang dieses unterzeichneten Angebots, ',
+  delai_bold: 'Implantation für Einverständnis validiert',
+  delai_p3: 'und Zahlung von 50% bei Bestellung: ',
+  delai_default: 'ab 45 Werktagen',
+  delai_map: {
+    'à partir de 30 jours ouvrés': 'ab 30 Werktagen',
+    'à partir de 40 jours ouvrés': 'ab 40 Werktagen',
+    'à partir de 45 jours ouvrés': 'ab 45 Werktagen'
+  },
+  duree_label: 'Installationsdauer: ',
+  duree_default: '3-4 Tage',
+  duree_map: {'3-4 jours':'3-4 Tage','4-5 jours':'4-5 Tage','5-7 jours':'5-7 Tage','8-10 jours':'8-10 Tage'},
+  date_debut: '• Gewünschter Installationsbeginn: ',
+  date_fin: '• Gewünschtes Installationsende: ',
+  paie_label: 'Zahlungsbedingungen: ',
+  paiement_map: {
+    '50 % à la commande, 50 % à la fin de l\'installation.': '50% bei Bestellung, 50% bei Abschluss der Installation.',
+    'Paiement à 45 jours fin de mois.': 'Zahlung innerhalb von 45 Tagen Monatsende.',
+    'Paiement à 30 jours date de facture.': 'Zahlung innerhalb von 30 Tagen nach Rechnungsdatum.'
+  },
+  pv: 'Am letzten Tag der Installation verpflichtet sich der Kunde, das Abnahmeprotokoll des Spielplatzes und das technische Handbuch zu unterzeichnen.',
+  validite_label: 'Gültigkeit dieses Angebots: ',
+  validite_default: '3 Monate',
+  engagement: 'Dieses Angebot muss vom bevollmächtigten Kunden unterzeichnet und vor Beginn der Produktion des Spielplatzes zurückgesandt werden.',
+  nous_restons: 'Wir stehen Ihnen für weitere Auskünfte gerne zur Verfügung.',
+  spi_sig: 'SPI Global Play Retail sa',
+  pour_accord: 'Einverstanden,',
+  date_sig: 'Datum:',
+  nom_left: 'Name: ',
+  nom_right: 'Name:',
+  sig_cachet: 'Unterschrift und Stempel',
+  note2: '* Bitte beachten Sie, dass wir nicht für Verzögerungen durch Zollverfahren, Probleme mit dem Spediteur oder Lieferverzögerungen unserer Lieferanten haftbar gemacht werden können. Obwohl wir alles unternehmen, um Ihre Artikel innerhalb der angegebenen Fristen zu versenden, können Umstände außerhalb unserer Kontrolle zu unvorhergesehenen Verzögerungen führen.',
+  info_comp: 'Ergänzende Informationen :',
+  cgv: [
+    '1 Jahr Garantie auf Teile und Arbeitsleistung (außer Vandalismus)',
+    'Im Falle einer Stornierung einer bereits in Produktion befindlichen Bestellung verpflichtet sich der Kunde, einen Pauschalbetrag von 75 % des Verkaufspreises zu zahlen.',
+    'Jede spätere Änderung der Bestellung, die zusätzliche Kosten verursacht, geht zu Lasten des Kunden.',
+    'Wenn der Fallschutzbelag von Spi Global Play installiert wird, verpflichtet sich der Kunde, den Bereich vor Beginn der Arbeiten vollständig zu renovieren (Reinigung, Entfernung des alten Belags, Nivellierung und verschiedene Fertigarbeiten).',
+    'Der vom Kunden validierte Standort muss bei Ankunft des Installationsteams mit dem tatsächlichen Standort identisch sein. Ist dies nicht der Fall, gehen die Mehrkosten zu Lasten des Kunden.',
+    'Die allgemeinen Geschäftsbedingungen sind auf Anfrage erhältlich.',
+    'Die Installationsteams sind von Spi Global Play retail zugelassen.'
+  ],
+  mois: ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'],
+  airetype_ext: 'Außenspielplatz',
+  airetype_int: 'Innenspielplatz',
+  sol_label: 'Fallschutzbelag im Spielbereich',
+  insp_label: 'Standortinspektion',
+  projet_label: 'Projektnr.: ',
+  dim_label: 'Abm.: ', dim_unit: ' mm',
+  cap_label: 'Kap.: ', cap_unit: ' Kinder',
+  age_label: 'Alter: ', age_unit: ' Jahre'
 };
 
 // ── Génération PDF ──
