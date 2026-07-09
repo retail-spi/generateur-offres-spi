@@ -522,9 +522,12 @@ textarea{resize:vertical;min-height:52px}
         <option value="intérieure" data-i18n="aire_int">Intérieure</option>
         <option value="extérieure" selected data-i18n="aire_ext">Extérieure</option>
       </select></div>
+      <div class="field"><label data-i18n="lang_label">Langue du PDF</label><select id="lang">
+        <option value="fr">🇫🇷 Français</option>
+        <option value="en">🇬🇧 English</option>
+      </select></div>
     </div>
   </div>
-  <input type="hidden" id="lang" value="fr"/>
 
   <div class="card">
     <div class="card-title" data-i18n="card_photo">Photo du produit (optionnel)</div>
@@ -1022,7 +1025,7 @@ function setFormLang(lang) {
     var k = el.getAttribute('data-i18n-ph');
     if (FL[k] !== undefined) el.placeholder = FL[k];
   });
-  document.getElementById('lang').value = lang;
+  // le sélecteur PDF (#lang) reste indépendant du toggle formulaire
   document.documentElement.lang = lang;
   document.querySelectorAll('.lang-btn').forEach(function(b) {
     b.classList.toggle('active', b.getAttribute('data-lang') === lang);
