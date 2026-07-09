@@ -939,7 +939,7 @@ var FORM_LANGS = {
     duree_label: "Durée d'installation",
     duree_34: '3-4 jours', duree_45: '4-5 jours', duree_57: '5-7 jours', duree_810: '8-10 jours',
     date_debut: 'Date début installation souhaitée', date_fin: 'Date fin installation souhaitée',
-    validite_label: "Validité de l'offre",
+    validite_label: "Validité de l'offre", validite_default: '3 mois',
     c_commercial: 'Nom du commercial', c_commercial_ph: 'Prénom Nom',
     sign_date: 'Date de signature', sign_date_hide: 'Ne pas indiquer la date',
     sign_label: 'Signature du commercial',
@@ -997,7 +997,7 @@ var FORM_LANGS = {
     duree_label: 'Installation duration',
     duree_34: '3-4 days', duree_45: '4-5 days', duree_57: '5-7 days', duree_810: '8-10 days',
     date_debut: 'Desired installation start date', date_fin: 'Desired installation end date',
-    validite_label: 'Offer validity',
+    validite_label: 'Offer validity', validite_default: '3 months',
     c_commercial: 'Sales rep name', c_commercial_ph: 'First name Last name',
     sign_date: 'Signature date', sign_date_hide: 'Do not include the date',
     sign_label: 'Sales rep signature',
@@ -1056,7 +1056,7 @@ var FORM_LANGS = {
     duree_label: 'Installatieduur',
     duree_34: '3-4 dagen', duree_45: '4-5 dagen', duree_57: '5-7 dagen', duree_810: '8-10 dagen',
     date_debut: 'Gewenste startdatum installatie', date_fin: 'Gewenste einddatum installatie',
-    validite_label: 'Geldigheidsduur aanbieding',
+    validite_label: 'Geldigheidsduur aanbieding', validite_default: '3 maanden',
     c_commercial: 'Naam verkoper', c_commercial_ph: 'Voornaam Achternaam',
     sign_date: 'Ondertekeningsdatum', sign_date_hide: 'Datum niet vermelden',
     sign_label: 'Handtekening verkoper',
@@ -1094,6 +1094,9 @@ function setFormLang(lang) {
   document.querySelectorAll('#opts input[data-f="label"]').forEach(function(el) {
     el.placeholder = FL.opt_lbl_ph;
   });
+  var knownValidite = ['3 mois','3 months','3 maanden'];
+  var velEl = document.getElementById('validite');
+  if(velEl && knownValidite.indexOf(velEl.value.trim()) !== -1) velEl.value = FL.validite_default;
   updateDestNote();
 }
 function switchLang(lang) { setFormLang(lang); }
