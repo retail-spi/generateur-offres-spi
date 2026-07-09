@@ -487,6 +487,7 @@ textarea{resize:vertical;min-height:52px}
     <div class="lang-toggle">
       <button class="lang-btn active" data-lang="fr" onclick="switchLang('fr')">🇫🇷 FR</button>
       <button class="lang-btn" data-lang="en" onclick="switchLang('en')">🇬🇧 EN</button>
+      <button class="lang-btn" data-lang="nl" onclick="switchLang('nl')">🇳🇱 NL</button>
     </div>
   </div>
 
@@ -525,6 +526,7 @@ textarea{resize:vertical;min-height:52px}
       <div class="field"><label data-i18n="lang_label">Langue du PDF</label><select id="lang">
         <option value="fr">🇫🇷 Français</option>
         <option value="en">🇬🇧 English</option>
+        <option value="nl">🇳🇱 Nederlands</option>
       </select></div>
     </div>
   </div>
@@ -1007,6 +1009,65 @@ var FORM_LANGS = {
     msg_success: '✅ PDF generated successfully!',
     msg_error_lib: 'PDF library not loaded.',
     msg_error_prefix: 'Error: '
+  },
+  nl: {
+    app_title: 'Generator commerciële aanbieding — SPI Global Play Retail',
+    app_sub: 'Vul de velden in · Klik op "PDF genereren" voor uw officiële aanbieding',
+    login_sub: 'Toegang voorbehouden aan gemachtigde verkopers',
+    login_pwd_ph: 'Wachtwoord', login_btn: 'Aanmelden', login_err: 'Onjuist wachtwoord.',
+    card_client: 'Klant / Ontvanger', card_offer: 'Aanbiedingsinformatie',
+    card_photo: 'Productfoto (optioneel)', card_price: 'Prijstabel',
+    card_specs: 'Technische specificaties', card_planning: 'Planning & Voorwaarden',
+    card_commercial: 'SPI Global Play Verkoper',
+    c_brand: 'Naam van het restaurant (merk)', c_lieu: 'Stad van het restaurant',
+    r_pays: 'Land', c_groupe: 'Bedrijfsnaam',
+    c_adresse: 'Bedrijfsadres (paginakop 1)',
+    r_adresse: 'Restaurantadres (pagina 2 + intro)',
+    c_contact: 'Contactpersoon (optioneel)',
+    c_contact_ph: 'bijv. Mevr. Jansen, Dhr. De Vries…',
+    c_tva: 'BTW-nummer klant', c_franchise: 'Projectmanager klant',
+    c_chef: 'Uitvoerend projectleider', paiement_label: 'Betalingsvoorwaarden',
+    paiement_50: '50% bij bestelling + 50% bij oplevering',
+    paiement_45: '45 dagen einde maand', paiement_30: '30 dagen na factuurdatum',
+    o_lieu: 'Plaats van uitgifte', o_date: 'Datum', o_projet: 'Projectnummer',
+    o_ref: 'Referentie / Producttype (titel aanbieding)',
+    aire_type_label: 'Type speeltuin', aire_int: 'Binnenspeeltuin', aire_ext: 'Buitenspeeltuin',
+    lang_label: 'PDF-taal',
+    photo_zone_p: '🖼️ Klik om een foto te uploaden<br><small>of <strong>Ctrl+V</strong> om te plakken vanuit klembord</small>',
+    photo_del: '× Foto verwijderen',
+    photo_pasted: '✅ Foto geplakt<br><small>Ctrl+V om te wijzigen</small>',
+    p_base: 'Basisprijs van de speeltuin (€ excl. BTW)',
+    p_inclus: 'Inbegrepen in basisprijs (kommagescheiden)',
+    opts_header: 'Extra opties',
+    opt_th_opt: 'Optie', opt_th_prix: 'Prijs excl. BTW (€)', opt_th_total: 'Totaal',
+    opt_lbl_ph: 'Binnen-/buitenverlichting', opt_add_btn: '+ Optie toevoegen',
+    p_remarques: 'Opmerking / vrije tekst (tabel pagina 1)',
+    remise_label: 'Commerciële korting', remise_suffix: '€ excl. BTW korting',
+    sol_label: 'Zachte vloer opnemen in aanbieding',
+    sol_inclus: 'Inbegrepen', sol_prix_radio: 'Prijs opgeven',
+    sol_prix_label: 'Prijs zachte vloer (€ excl. BTW)',
+    insp_label: 'Plaatsinspectie opnemen in aanbieding',
+    t_base: 'Basisprijs', t_opts: 'Opties', t_sol: 'Zachte vloer',
+    t_remise: 'Korting', t_total: 'TOTAALPRIJS EXCL. BTW *',
+    dest_be: 'België', dest_eu: 'Europese Unie', dest_noneu: 'Buiten EU',
+    dim: 'Afmetingen (L x B x H mm)', capa: 'Capaciteit', age: 'Leeftijdsgroep',
+    delai_label: 'Levertijd',
+    delai_30: '30 werkdagen', delai_40: '40 werkdagen', delai_45: '45 werkdagen',
+    duree_label: 'Installatieduur',
+    duree_34: '3-4 dagen', duree_45: '4-5 dagen', duree_57: '5-7 dagen', duree_810: '8-10 dagen',
+    date_debut: 'Gewenste startdatum installatie', date_fin: 'Gewenste einddatum installatie',
+    validite_label: 'Geldigheidsduur aanbieding',
+    c_commercial: 'Naam verkoper', c_commercial_ph: 'Voornaam Achternaam',
+    sign_date: 'Ondertekeningsdatum', sign_date_hide: 'Datum niet vermelden',
+    sign_label: 'Handtekening verkoper',
+    sign_zone_p: '✍️ Klik om een handtekening te uploaden<br><small>of <strong>Ctrl+V</strong> na klikken hier</small>',
+    sign_del: '× Handtekening verwijderen',
+    sign_pasted: '✅ Handtekening geplakt<br><small>Ctrl+V om te wijzigen</small>',
+    btn_pdf: '⬇ Officiële PDF genereren',
+    msg_generating: 'PDF genereren…',
+    msg_success: '✅ PDF succesvol aangemaakt!',
+    msg_error_lib: 'PDF-bibliotheek niet geladen.',
+    msg_error_prefix: 'Fout: '
   }
 };
 
@@ -1199,6 +1260,87 @@ var LANGS = {
     cap_label: 'Cap.: ', cap_unit: ' children',
     age_label: 'Age: ', age_unit: ' years'
   }
+};
+
+LANGS.nl = {
+  contact_default: 'Geachte mevrouw, mijnheer,',
+  concerne_prefix: 'Prijsaanbieding voor een speeltuin van het type ',
+  concerne_label: 'Betreft: ',
+  intro: function(at,ref,brand,lieu,pays){ return 'Het verheugt ons u onze beste prijsaanbieding te doen voor de '+at+' speeltuin van het type '+ref+' voor uw restaurant '+brand+' gelegen te '+lieu+(pays?', '+pays:'')+'.'; },
+  photo_placeholder: 'Productfoto',
+  prix_base: 'Prijs van de speeltuin',
+  options_label: 'Optie(s):',
+  incluse: 'Inbegrepen',
+  inclus: 'Inbegrepen',
+  remise: 'Commerciële korting:',
+  prix_total: 'TOTAALPRIJS* :',
+  note_be: '* Prijs excl. BTW',
+  note_eu: '* BTW-vrijgesteld – intracommunautaire levering',
+  note_noneu: '* BTW-vrijgesteld – levering buiten de Europese Unie',
+  note_noinsp: ' – Plaatsinspectie niet inbegrepen',
+  livre_avec: 'Speeltuin geleverd met :',
+  livraison_items: [
+    'Plannen met verschillende aanzichten en implantatie',
+    'Technische handleiding voor onderhoud en reiniging',
+    'Conformiteitsattest afgeleverd door een erkend organisme'
+  ],
+  sans_sol: 'Zonder zachte vloer in het speelterrein',
+  info_gen: 'Algemene informatie :',
+  adresse_rest: 'Adres van het restaurant:',
+  client_franchise: '•  Franchisenemer:',
+  chef_projet: '•  Projectverantwoordelijke klant:',
+  delai_titre: 'Levertijd :',
+  delai_p1: 'Levertijd na ontvangst van deze ondertekende aanbieding, ',
+  delai_bold: 'implantatie goedgekeurd voor akkoord',
+  delai_p3: 'en betaling van 50% bij bestelling: ',
+  delai_default: 'vanaf 45 werkdagen',
+  delai_map: {
+    'à partir de 30 jours ouvrés': 'vanaf 30 werkdagen',
+    'à partir de 40 jours ouvrés': 'vanaf 40 werkdagen',
+    'à partir de 45 jours ouvrés': 'vanaf 45 werkdagen'
+  },
+  duree_label: 'Installatieduur: ',
+  duree_default: '3-4 dagen',
+  duree_map: {'3-4 jours':'3-4 dagen','4-5 jours':'4-5 dagen','5-7 jours':'5-7 dagen','8-10 jours':'8-10 dagen'},
+  date_debut: '• Gewenste startdatum installatie: ',
+  date_fin: '• Gewenste einddatum installatie: ',
+  paie_label: 'Betalingsvoorwaarden: ',
+  paiement_map: {
+    '50 % à la commande, 50 % à la fin de l\'installation.': '50% bij bestelling, 50% bij oplevering van de installatie.',
+    'Paiement à 45 jours fin de mois.': 'Betaling binnen 45 dagen einde maand.',
+    'Paiement à 30 jours date de facture.': 'Betaling binnen 30 dagen na factuurdatum.'
+  },
+  pv: 'Op de laatste dag van de installatie verbindt de klant zich ertoe het ontvangstverslag van de speeltuin en de technische handleiding te ondertekenen.',
+  validite_label: 'Geldigheid van deze aanbieding: ',
+  validite_default: '3 maanden',
+  engagement: 'Deze aanbieding dient te worden ondertekend door de bevoegde klant en vóór het begin van de productie van de speeltuin te worden teruggestuurd.',
+  nous_restons: 'Wij staan te uwer beschikking voor alle verdere inlichtingen.',
+  spi_sig: 'SPI Global Play Retail sa',
+  pour_accord: 'Voor akkoord,',
+  date_sig: 'Datum:',
+  nom_left: 'Naam: ',
+  nom_right: 'Naam:',
+  sig_cachet: 'Handtekening en stempel',
+  note2: '* Wij wijzen erop dat wij niet aansprakelijk kunnen worden gesteld voor vertragingen veroorzaakt door douaneprocedures, problemen met de vervoerder of vertragingen bij onze leveranciers. Hoewel wij alles in het werk stellen om uw artikelen binnen de opgegeven termijnen te verzenden, kunnen omstandigheden buiten onze wil onvoorziene vertragingen veroorzaken.',
+  info_comp: 'Aanvullende informatie :',
+  cgv: [
+    '1 jaar garantie op onderdelen en arbeid (uitgezonderd vandalisme)',
+    'Bij annulering van een bestelling die reeds in productie is, verbindt de klant zich ertoe een forfaitair bedrag van 75% van de verkoopprijs te betalen.',
+    'Elke latere wijziging van de bestelling die extra kosten met zich meebrengt, is ten laste van de klant.',
+    'Als de zachte vloer wordt geïnstalleerd door Spi Global Play, verbindt de klant zich ertoe de zone volledig te renoveren vóór de uitvoering van de werken (reiniging, verwijdering van de oude vloer, nivellering en diverse afwerkingen).',
+    'De door de klant goedgekeurde site moet identiek zijn aan de werkelijke site bij aankomst van het installatieteam. Is dit niet het geval, dan zijn de bijkomende kosten ten laste van de klant.',
+    'De algemene voorwaarden zijn op aanvraag beschikbaar.',
+    'De installatieteams zijn erkend door Spi Global Play retail.'
+  ],
+  mois: ['januari','februari','maart','april','mei','juni','juli','augustus','september','oktober','november','december'],
+  airetype_ext: 'buiten',
+  airetype_int: 'binnen',
+  sol_label: 'Zachte vloer in het speelterrein',
+  insp_label: 'Plaatsinspectie',
+  projet_label: 'Projectnr.: ',
+  dim_label: 'Afm.: ', dim_unit: ' mm',
+  cap_label: 'Cap.: ', cap_unit: ' kinderen',
+  age_label: 'Leeftijd: ', age_unit: ' jaar'
 };
 
 // ── Génération PDF ──
