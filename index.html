@@ -416,6 +416,10 @@ body{font-family:system-ui,sans-serif;background:#f2f2ee;color:#1a1a1a;font-size
 .app-header img{height:50px}
 .app-header div h1{font-size:15px;font-weight:700;color:#1a1a1a}
 .app-header div p{font-size:11.5px;color:#888;margin-top:2px}
+.lang-toggle{display:flex;gap:6px;margin-left:auto;flex-shrink:0}
+.lang-btn{padding:5px 11px;border-radius:5px;border:1px solid #ddd;background:#f9f9f7;font-size:12px;cursor:pointer;font-weight:700;color:#888;transition:.15s}
+.lang-btn.active{background:#fd9c00;color:#fff;border-color:#fd9c00}
+.lang-btn:hover:not(.active){background:#f0e8dc;border-color:#fd9c00;color:#fd9c00}
 .card{background:#fff;border:1px solid #e4e4e0;border-radius:9px;padding:15px 16px;margin-bottom:10px}
 .card-title{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fd9c00;margin-bottom:11px;padding-bottom:6px;border-bottom:1px solid #f5e8cc}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
@@ -467,98 +471,108 @@ textarea{resize:vertical;min-height:52px}
   <div id="loginBox">
     <img id="loginLogo" src="" alt="SPI"/>
     <h2>SPI Global Play Retail</h2>
-    <p class="login-sub">Accès réservé aux commerciaux autorisés</p>
-    <input type="password" id="loginPwd" placeholder="Mot de passe" autocomplete="current-password"/>
-    <button id="loginBtn">Accéder</button>
-    <p id="loginErr">Mot de passe incorrect.</p>
+    <p class="login-sub" data-i18n="login_sub">Accès réservé aux commerciaux autorisés</p>
+    <input type="password" id="loginPwd" placeholder="Mot de passe" data-i18n-ph="login_pwd_ph" autocomplete="current-password"/>
+    <button id="loginBtn" data-i18n="login_btn">Accéder</button>
+    <p id="loginErr" data-i18n="login_err">Mot de passe incorrect.</p>
   </div>
 </div>
 <div class="wrap" id="mainApp">
   <div class="app-header">
     <img id="logoImg" src="" alt="SPI"/>
-    <div>
-      <h1>Générateur d'offre commerciale — SPI Global Play Retail</h1>
-      <p>Remplissez les champs · Cliquez sur "Générer le PDF" pour obtenir votre offre officielle</p>
+    <div style="flex:1">
+      <h1 data-i18n="app_title">Générateur d'offre commerciale — SPI Global Play Retail</h1>
+      <p data-i18n="app_sub">Remplissez les champs · Cliquez sur "Générer le PDF" pour obtenir votre offre officielle</p>
+    </div>
+    <div class="lang-toggle">
+      <button class="lang-btn active" data-lang="fr" onclick="switchLang('fr')">🇫🇷 FR</button>
+      <button class="lang-btn" data-lang="en" onclick="switchLang('en')">🇬🇧 EN</button>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title">Client / Destinataire</div>
+    <div class="card-title" data-i18n="card_client">Client / Destinataire</div>
     <div class="grid2">
-      <div class="field"><label>Nom du restaurant (enseigne)</label><input id="c_brand"/></div>
-      <div class="field"><label>Ville du restaurant</label><input id="c_lieu"/></div>
-      <div class="field"><label>Pays du restaurant</label><input id="r_pays" /></div>
-      <div class="field"><label>Raison Sociale</label><input id="c_groupe"/></div>
-      <div class="field full"><label>Adresse de la société (en-tête page 1)</label><textarea id="c_adresse" style="min-height:50px"></textarea></div>
-      <div class="field full"><label>Adresse du restaurant (page 2 + intro)</label><textarea id="r_adresse" style="min-height:50px"></textarea></div>
-      <div class="field"><label>Personne de contact (optionnel — remplace "Madame, Monsieur")</label><input id="c_contact" placeholder="ex : Madame Dupont, Monsieur Martin…"/></div>
-      <div class="field"><label>N° TVA client</label><input id="c_tva"/></div>
-      <div class="field"><label>Manager du projet client</label><input id="c_franchise"/></div>
-
-      <div class="field"><label>Maître d'oeuvre d'exécution</label><input id="c_chef"/></div>
-      <div class="field full"><label>Modalités de paiement</label><select id="paiement"><option value="50 % à la commande, 50 % à la fin de l'installation.">50% à la commande + 50% à la fin de l'installation</option><option value="Paiement à 45 jours fin de mois.">45 jours fin de mois</option><option value="Paiement à 30 jours date de facture.">30 jours date de facture</option></select></div>
+      <div class="field"><label data-i18n="c_brand">Nom du restaurant (enseigne)</label><input id="c_brand"/></div>
+      <div class="field"><label data-i18n="c_lieu">Ville du restaurant</label><input id="c_lieu"/></div>
+      <div class="field"><label data-i18n="r_pays">Pays du restaurant</label><input id="r_pays"/></div>
+      <div class="field"><label data-i18n="c_groupe">Raison Sociale</label><input id="c_groupe"/></div>
+      <div class="field full"><label data-i18n="c_adresse">Adresse de la société (en-tête page 1)</label><textarea id="c_adresse" style="min-height:50px"></textarea></div>
+      <div class="field full"><label data-i18n="r_adresse">Adresse du restaurant (page 2 + intro)</label><textarea id="r_adresse" style="min-height:50px"></textarea></div>
+      <div class="field"><label data-i18n="c_contact">Personne de contact (optionnel)</label><input id="c_contact" placeholder="ex : Madame Dupont, Monsieur Martin…" data-i18n-ph="c_contact_ph"/></div>
+      <div class="field"><label data-i18n="c_tva">N° TVA client</label><input id="c_tva"/></div>
+      <div class="field"><label data-i18n="c_franchise">Manager du projet client</label><input id="c_franchise"/></div>
+      <div class="field"><label data-i18n="c_chef">Maître d'oeuvre d'exécution</label><input id="c_chef"/></div>
+      <div class="field full"><label data-i18n="paiement_label">Modalités de paiement</label><select id="paiement">
+        <option value="50 % à la commande, 50 % à la fin de l'installation." data-i18n="paiement_50">50% à la commande + 50% à la fin de l'installation</option>
+        <option value="Paiement à 45 jours fin de mois." data-i18n="paiement_45">45 jours fin de mois</option>
+        <option value="Paiement à 30 jours date de facture." data-i18n="paiement_30">30 jours date de facture</option>
+      </select></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title">Informations de l'offre</div>
+    <div class="card-title" data-i18n="card_offer">Informations de l'offre</div>
     <div class="grid3">
-      <div class="field"><label>Lieu d'émission</label><input id="o_lieu" value="Herstal, Belgique" readonly style="background:#f5f5f3;color:#999;cursor:default"/></div>
-      <div class="field"><label>Date</label><input id="o_date" type="date"/></div>
-      <div class="field"><label>N° de projet</label><input id="o_projet"/></div>
-      <div class="field full"><label>Référence / Type de produit (titre de l'offre)</label><input id="o_ref"/></div>
-      <div class="field"><label>Type d'aire de jeux</label><select id="aire_type"><option value="intérieure">Intérieure</option><option value="extérieure" selected>Extérieure</option></select></div>
-      <div class="field"><label>Langue du PDF</label><select id="lang"><option value="fr">Français</option><option value="en">English</option></select></div>
+      <div class="field"><label data-i18n="o_lieu">Lieu d'émission</label><input id="o_lieu" value="Herstal, Belgique" readonly style="background:#f5f5f3;color:#999;cursor:default"/></div>
+      <div class="field"><label data-i18n="o_date">Date</label><input id="o_date" type="date"/></div>
+      <div class="field"><label data-i18n="o_projet">N° de projet</label><input id="o_projet"/></div>
+      <div class="field full"><label data-i18n="o_ref">Référence / Type de produit (titre de l'offre)</label><input id="o_ref"/></div>
+      <div class="field"><label data-i18n="aire_type_label">Type d'aire de jeux</label><select id="aire_type">
+        <option value="intérieure" data-i18n="aire_int">Intérieure</option>
+        <option value="extérieure" selected data-i18n="aire_ext">Extérieure</option>
+      </select></div>
     </div>
   </div>
+  <input type="hidden" id="lang" value="fr"/>
 
   <div class="card">
-    <div class="card-title">Photo du produit (optionnel)</div>
+    <div class="card-title" data-i18n="card_photo">Photo du produit (optionnel)</div>
     <div class="photo-zone" id="photoZone">
       <input type="file" id="photoInput" accept="image/*"/>
-      <p>🖼️ Cliquez pour uploader une photo<br><small>ou <strong>Ctrl+V</strong> pour coller depuis le presse-papiers</small></p>
+      <p data-i18n-html="photo_zone_p">🖼️ Cliquez pour uploader une photo<br><small>ou <strong>Ctrl+V</strong> pour coller depuis le presse-papiers</small></p>
     </div>
     <img id="photoPreview" alt="Aperçu"/>
-    <button class="img-del-btn" id="photoDelBtn">× Supprimer la photo</button>
+    <button class="img-del-btn" id="photoDelBtn" data-i18n="photo_del">× Supprimer la photo</button>
   </div>
 
   <div class="card">
-    <div class="card-title">Tableau de prix</div>
-    <div class="field" style="margin-bottom:10px"><label>Prix de base de l'aire de jeux (€ HT)</label><input id="p_base" type="text" value="0" inputmode="decimal"/></div>
-    <div class="field" style="margin-bottom:8px"><label>Inclus dans le prix de base (séparés par des virgules)</label><input id="p_inclus"/></div>
-    <p style="font-size:11px;color:#aaa;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Options supplémentaires</p>
+    <div class="card-title" data-i18n="card_price">Tableau de prix</div>
+    <div class="field" style="margin-bottom:10px"><label data-i18n="p_base">Prix de base de l'aire de jeux (€ HT)</label><input id="p_base" type="text" value="0" inputmode="decimal"/></div>
+    <div class="field" style="margin-bottom:8px"><label data-i18n="p_inclus">Inclus dans le prix de base (séparés par des virgules)</label><input id="p_inclus"/></div>
+    <p data-i18n="opts_header" style="font-size:11px;color:#aaa;margin-bottom:8px;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Options supplémentaires</p>
     <table class="options-table">
-      <thead><tr><th style="width:55%">Option</th><th style="width:22%">Prix HT (€)</th><th style="width:15%">Total</th><th style="width:8%"></th></tr></thead>
+      <thead><tr><th data-i18n="opt_th_opt" style="width:55%">Option</th><th data-i18n="opt_th_prix" style="width:22%">Prix HT (€)</th><th data-i18n="opt_th_total" style="width:15%">Total</th><th style="width:8%"></th></tr></thead>
       <tbody id="opts"></tbody>
     </table>
-    <button class="add-btn" id="btnOpt">+ Ajouter une option</button>
-    <div class="field" style="margin-top:8px"><label>Remarque / note libre (tableau page 1)</label><textarea id="p_remarques" style="min-height:36px"></textarea></div>
+    <button class="add-btn" id="btnOpt" data-i18n="opt_add_btn">+ Ajouter une option</button>
+    <div class="field" style="margin-top:8px"><label data-i18n="p_remarques">Remarque / note libre (tableau page 1)</label><textarea id="p_remarques" style="min-height:36px"></textarea></div>
     <div style="margin:8px 0;padding:8px 10px;background:#fff8f0;border-radius:6px;border:1px dashed #fd9c00">
       <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;font-weight:600">
         <input type="checkbox" id="remise_ck" style="width:auto" onchange="calcTotal()"/>
-        Remise commerciale
+        <span data-i18n="remise_label">Remise commerciale</span>
       </label>
       <div id="remise_row" style="display:none;margin-top:6px;display:flex;align-items:center;gap:8px">
         <input id="remise_val" type="text" value="0" inputmode="decimal" style="width:140px" oninput="calcTotal()"/>
-        <span style="font-size:13px;color:#666">€ HT de remise</span>
+        <span data-i18n="remise_suffix" style="font-size:13px;color:#666">€ HT de remise</span>
       </div>
     </div>
     <div style="margin:8px 0;padding:8px 10px;background:#f9f9f7;border-radius:6px;border:1px dashed #ddd">
       <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;font-weight:600">
         <input type="checkbox" id="sol_souple" style="width:auto"/>
-        Inclure sol souple dans l'offre
+        <span data-i18n="sol_label">Inclure sol souple dans l'offre</span>
       </label>
       <div id="sol_prix_row" style="display:none;margin-top:8px">
         <div style="display:flex;gap:18px;margin-bottom:6px">
           <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
-            <input type="radio" name="sol_mode" id="sol_mode_inclus" value="inclus" checked onchange="updateSolMode()"/> Inclus
+            <input type="radio" name="sol_mode" id="sol_mode_inclus" value="inclus" checked onchange="updateSolMode()"/> <span data-i18n="sol_inclus">Inclus</span>
           </label>
           <label style="display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer">
-            <input type="radio" name="sol_mode" id="sol_mode_prix" value="prix" onchange="updateSolMode()"/> Indiquer un prix
+            <input type="radio" name="sol_mode" id="sol_mode_prix" value="prix" onchange="updateSolMode()"/> <span data-i18n="sol_prix_radio">Indiquer un prix</span>
           </label>
         </div>
         <div id="sol_prix_input" style="display:none">
-          <label style="font-size:12px;color:#666">Prix sol souple (€ HT)</label>
+          <label data-i18n="sol_prix_label" style="font-size:12px;color:#666">Prix sol souple (€ HT)</label>
           <input id="sol_prix" type="text" value="0" inputmode="decimal" style="width:160px;margin-top:3px"/>
         </div>
       </div>
@@ -566,71 +580,80 @@ textarea{resize:vertical;min-height:52px}
     <div style="margin:8px 0;padding:8px 10px;background:#f9f9f7;border-radius:6px;border:1px dashed #ddd">
       <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;font-weight:600">
         <input type="checkbox" id="insp_ck" style="width:auto" onchange="updateDestNote(); calcTotal();"/>
-        Inclure la visite d'inspection dans l'offre
+        <span data-i18n="insp_label">Inclure la visite d'inspection dans l'offre</span>
       </label>
     </div>
     <div class="total-box">
-      <div class="t-row"><span>Prix de base</span><span id="t_base">0,00 €</span></div>
-      <div class="t-row" id="row_opts" style="display:none"><span>Options</span><span id="t_opts">0,00 €</span></div>
-      <div class="t-row" id="row_sol" style="display:none"><span>Sol souple</span><span id="t_sol">0,00 €</span></div>
-      <div class="t-row" id="row_remise" style="display:none;color:#c0392b"><span id="remise_label">Remise</span><span id="t_remise">0,00 €</span></div>
-      <div class="t-row main"><span>PRIX TOTAL HT *</span><span id="t_total">0,00 €</span></div>
+      <div class="t-row"><span data-i18n="t_base">Prix de base</span><span id="t_base">0,00 €</span></div>
+      <div class="t-row" id="row_opts" style="display:none"><span data-i18n="t_opts">Options</span><span id="t_opts">0,00 €</span></div>
+      <div class="t-row" id="row_sol" style="display:none"><span data-i18n="t_sol">Sol souple</span><span id="t_sol">0,00 €</span></div>
+      <div class="t-row" id="row_remise" style="display:none;color:#c0392b"><span data-i18n="t_remise" id="remise_label">Remise</span><span id="t_remise">0,00 €</span></div>
+      <div class="t-row main"><span data-i18n="t_total">PRIX TOTAL HT *</span><span id="t_total">0,00 €</span></div>
     </div>
     <div style="display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap">
       <select id="dest" style="font-size:11px;padding:4px 8px;border:1px solid #ddd;border-radius:4px;background:#fafafa;color:#555;cursor:pointer">
-        <option value="BE">Belgique</option>
-        <option value="EU">Union Européenne</option>
-        <option value="NON-EU">Hors UE</option>
+        <option value="BE" data-i18n="dest_be">Belgique</option>
+        <option value="EU" data-i18n="dest_eu">Union Européenne</option>
+        <option value="NON-EU" data-i18n="dest_noneu">Hors UE</option>
       </select>
       <p id="note_livraison" style="font-size:11px;color:#aaa;font-style:italic;margin:0">* Prix hors TVA – Visite d'inspection sur site non incluse</p>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title">Caractéristiques techniques</div>
+    <div class="card-title" data-i18n="card_specs">Caractéristiques techniques</div>
     <div class="grid3">
-      <div class="field"><label>Dimensions (L x l x H mm)</label><input id="dim"/></div>
-      <div class="field"><label>Capacité</label><input id="capa"/></div>
-      <div class="field"><label>Tranche d'âge</label><input id="age"/></div>
+      <div class="field"><label data-i18n="dim">Dimensions (L x l x H mm)</label><input id="dim"/></div>
+      <div class="field"><label data-i18n="capa">Capacité</label><input id="capa"/></div>
+      <div class="field"><label data-i18n="age">Tranche d'âge</label><input id="age"/></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title">Planning & Conditions</div>
+    <div class="card-title" data-i18n="card_planning">Planning & Conditions</div>
     <div class="grid2">
-      <div class="field"><label>Délai de livraison</label><select id="delai"><option value="à partir de 30 jours ouvrés">30 jours ouvrés</option><option value="à partir de 40 jours ouvrés">40 jours ouvrés</option><option value="à partir de 45 jours ouvrés" selected>45 jours ouvrés</option></select></div>
-      <div class="field"><label>Durée d'installation</label><select id="duree_install"><option value="3-4 jours">3-4 jours</option><option value="4-5 jours">4-5 jours</option><option value="5-7 jours">5-7 jours</option><option value="8-10 jours">8-10 jours</option></select></div>
-      <div class="field"><label>Date début installation souhaitée</label><input id="date_debut"/></div>
-      <div class="field"><label>Date fin installation souhaitée</label><input id="date_fin"/></div>
-      <div class="field"><label>Validité de l'offre</label><input id="validite" value="3 mois"/></div>
+      <div class="field"><label data-i18n="delai_label">Délai de livraison</label><select id="delai">
+        <option value="à partir de 30 jours ouvrés" data-i18n="delai_30">30 jours ouvrés</option>
+        <option value="à partir de 40 jours ouvrés" data-i18n="delai_40">40 jours ouvrés</option>
+        <option value="à partir de 45 jours ouvrés" selected data-i18n="delai_45">45 jours ouvrés</option>
+      </select></div>
+      <div class="field"><label data-i18n="duree_label">Durée d'installation</label><select id="duree_install">
+        <option value="3-4 jours" data-i18n="duree_34">3-4 jours</option>
+        <option value="4-5 jours" data-i18n="duree_45">4-5 jours</option>
+        <option value="5-7 jours" data-i18n="duree_57">5-7 jours</option>
+        <option value="8-10 jours" data-i18n="duree_810">8-10 jours</option>
+      </select></div>
+      <div class="field"><label data-i18n="date_debut">Date début installation souhaitée</label><input id="date_debut"/></div>
+      <div class="field"><label data-i18n="date_fin">Date fin installation souhaitée</label><input id="date_fin"/></div>
+      <div class="field"><label data-i18n="validite_label">Validité de l'offre</label><input id="validite" value="3 mois"/></div>
     </div>
   </div>
 
   <div class="card">
-    <div class="card-title">Commercial SPI Global Play</div>
+    <div class="card-title" data-i18n="card_commercial">Commercial SPI Global Play</div>
     <div class="grid2" style="margin-bottom:10px">
-      <div class="field"><label>Nom du commercial</label><input id="c_commercial" placeholder="Prénom Nom"/></div>
+      <div class="field"><label data-i18n="c_commercial">Nom du commercial</label><input id="c_commercial" placeholder="Prénom Nom" data-i18n-ph="c_commercial_ph"/></div>
       <div class="field">
-        <label>Date de signature</label>
+        <label data-i18n="sign_date">Date de signature</label>
         <input id="c_sign_date" type="date"/>
         <label style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:#888;margin-top:4px;cursor:pointer">
           <input type="checkbox" id="sign_date_hide" style="width:auto" onchange="document.getElementById('c_sign_date').disabled=this.checked; document.getElementById('c_sign_date').style.opacity=this.checked?'0.35':'1';"/>
-          Ne pas indiquer la date
+          <span data-i18n="sign_date_hide">Ne pas indiquer la date</span>
         </label>
       </div>
     </div>
     <div class="field">
-      <label>Signature du commercial</label>
+      <label data-i18n="sign_label">Signature du commercial</label>
       <div class="photo-zone" id="signZone" style="margin-top:4px">
         <input type="file" id="signInput" accept="image/*"/>
-        <p>✍️ Cliquez pour uploader une signature<br><small>ou <strong>Ctrl+V</strong> après avoir cliqué ici</small></p>
+        <p data-i18n-html="sign_zone_p">✍️ Cliquez pour uploader une signature<br><small>ou <strong>Ctrl+V</strong> après avoir cliqué ici</small></p>
       </div>
       <img id="signPreview" alt="Signature"/>
-      <button class="img-del-btn" id="signDelBtn">× Supprimer la signature</button>
+      <button class="img-del-btn" id="signDelBtn" data-i18n="sign_del">× Supprimer la signature</button>
     </div>
   </div>
 
-  <button class="btn-pdf" id="btnPDF">⬇ Générer le PDF officiel</button>
+  <button class="btn-pdf" id="btnPDF" data-i18n="btn_pdf">⬇ Générer le PDF officiel</button>
   <p class="msg" id="msg"></p>
 </div>
 
@@ -679,7 +702,7 @@ document.getElementById('signDelBtn').addEventListener('click', function(e){
   signDataURL=null; signAR=3;
   var p=document.getElementById('signPreview'); p.src=''; p.style.display='none';
   document.getElementById('signInput').value='';
-  document.querySelector('#signZone p').innerHTML='✍️ Cliquez pour uploader une signature<br><small>ou <strong>Ctrl+V</strong> après avoir cliqué ici</small>';
+  document.querySelector('#signZone p').innerHTML=(FORM_LANGS[currentFormLang]||FORM_LANGS.fr).sign_zone_p;
   this.style.display='none';
 });
 
@@ -723,7 +746,7 @@ document.addEventListener('paste', function(e){
           var _sImg2=new Image(); _sImg2.onload=function(){signAR=this.naturalWidth/this.naturalHeight||3;}; _sImg2.src=signDataURL;
           var p=document.getElementById('signPreview');
           p.src=signDataURL; p.style.display='block';
-          document.querySelector('#signZone p').innerHTML='✅ Signature collée<br><small>Ctrl+V pour changer</small>';
+          document.querySelector('#signZone p').innerHTML=(FORM_LANGS[currentFormLang]||FORM_LANGS.fr).sign_pasted;
           document.getElementById('signDelBtn').style.display='inline-block';
         };
       } else {
@@ -749,7 +772,8 @@ function renderOpts() {
   var tb = document.getElementById('opts'); tb.innerHTML='';
   opts.forEach(function(o) {
     var tr = document.createElement('tr');
-    tr.innerHTML='<td><input type="text" value="'+esc(o.label)+'" placeholder="Éclairage intérieur/extérieur" data-id="'+o.id+'" data-f="label"/></td>'+
+    var _optPh=(FORM_LANGS[currentFormLang]||FORM_LANGS.fr).opt_lbl_ph;
+    tr.innerHTML='<td><input type="text" value="'+esc(o.label)+'" placeholder="'+_optPh+'" data-id="'+o.id+'" data-f="label"/></td>'+
       '<td><input type="text" value="'+esc(o.prix)+'" placeholder="0" inputmode="decimal" data-id="'+o.id+'" data-f="prix"/></td>'+
       '<td class="td-ro" data-id="'+o.id+'">'+fmtE(parseFloat(o.prix)||0)+'</td>'+
       '<td><button class="del" data-del="'+o.id+'">×</button></td>';
@@ -835,12 +859,9 @@ document.getElementById('sol_prix').addEventListener('input',calcTotal);
 function updateDestNote(){
   var d=document.getElementById('dest').value;
   var insp=document.getElementById('insp_ck').checked;
-  var n;
-  if(d==='BE') n='* Prix hors TVA';
-  else n='* Prix exempt de TVA';
-  if(d==='EU') n+=' – livraison intracommunautaire';
-  else if(d==='NON-EU') n+=' – livraison hors Union Européenne';
-  if(!insp) n+=' – Visite d\'inspection sur site non incluse';
+  var PL=LANGS[currentFormLang]||LANGS.fr;
+  var n=(d==='BE')?PL.note_be:(d==='EU')?PL.note_eu:PL.note_noneu;
+  if(!insp) n+=PL.note_noinsp;
   document.getElementById('note_livraison').textContent=n;
 }
 document.getElementById('dest').addEventListener('change',updateDestNote);
@@ -864,6 +885,154 @@ var SPI_NOM='SPI Global Play Retail S.A.';
 var SPI_ADR='1\u00e8re Avenue, 66 \u2013 4040 Herstal \u2013 Belgium';
 var SPI_TEL='Phone : 0032.4.342.52.55';
 var SPI_VAT='VAT : BE0474.388.396';
+
+// ── Traductions Formulaire ──
+var currentFormLang = 'fr';
+var FORM_LANGS = {
+  fr: {
+    app_title: "Générateur d'offre commerciale — SPI Global Play Retail",
+    app_sub: 'Remplissez les champs · Cliquez sur "Générer le PDF" pour obtenir votre offre officielle',
+    login_sub: 'Accès réservé aux commerciaux autorisés',
+    login_pwd_ph: 'Mot de passe', login_btn: 'Accéder', login_err: 'Mot de passe incorrect.',
+    card_client: 'Client / Destinataire', card_offer: "Informations de l'offre",
+    card_photo: 'Photo du produit (optionnel)', card_price: 'Tableau de prix',
+    card_specs: 'Caractéristiques techniques', card_planning: 'Planning & Conditions',
+    card_commercial: 'Commercial SPI Global Play',
+    c_brand: 'Nom du restaurant (enseigne)', c_lieu: 'Ville du restaurant',
+    r_pays: 'Pays du restaurant', c_groupe: 'Raison Sociale',
+    c_adresse: 'Adresse de la société (en-tête page 1)',
+    r_adresse: 'Adresse du restaurant (page 2 + intro)',
+    c_contact: 'Personne de contact (optionnel)',
+    c_contact_ph: 'ex : Madame Dupont, Monsieur Martin…',
+    c_tva: 'N° TVA client', c_franchise: 'Manager du projet client',
+    c_chef: "Maître d'oeuvre d'exécution", paiement_label: 'Modalités de paiement',
+    paiement_50: "50% à la commande + 50% à la fin de l'installation",
+    paiement_45: '45 jours fin de mois', paiement_30: '30 jours date de facture',
+    o_lieu: "Lieu d'émission", o_date: 'Date', o_projet: 'N° de projet',
+    o_ref: "Référence / Type de produit (titre de l'offre)",
+    aire_type_label: "Type d'aire de jeux", aire_int: 'Intérieure', aire_ext: 'Extérieure',
+    photo_zone_p: '🖼️ Cliquez pour uploader une photo<br><small>ou <strong>Ctrl+V</strong> pour coller depuis le presse-papiers</small>',
+    photo_del: '× Supprimer la photo',
+    photo_pasted: '✅ Photo collée<br><small>Ctrl+V pour changer</small>',
+    p_base: "Prix de base de l'aire de jeux (€ HT)",
+    p_inclus: 'Inclus dans le prix de base (séparés par des virgules)',
+    opts_header: 'Options supplémentaires',
+    opt_th_opt: 'Option', opt_th_prix: 'Prix HT (€)', opt_th_total: 'Total',
+    opt_lbl_ph: 'Éclairage intérieur/extérieur', opt_add_btn: '+ Ajouter une option',
+    p_remarques: 'Remarque / note libre (tableau page 1)',
+    remise_label: 'Remise commerciale', remise_suffix: '€ HT de remise',
+    sol_label: "Inclure sol souple dans l'offre",
+    sol_inclus: 'Inclus', sol_prix_radio: 'Indiquer un prix',
+    sol_prix_label: 'Prix sol souple (€ HT)',
+    insp_label: "Inclure la visite d'inspection dans l'offre",
+    t_base: 'Prix de base', t_opts: 'Options', t_sol: 'Sol souple',
+    t_remise: 'Remise', t_total: 'PRIX TOTAL HT *',
+    dest_be: 'Belgique', dest_eu: 'Union Européenne', dest_noneu: 'Hors UE',
+    dim: 'Dimensions (L x l x H mm)', capa: 'Capacité', age: "Tranche d'âge",
+    delai_label: 'Délai de livraison',
+    delai_30: '30 jours ouvrés', delai_40: '40 jours ouvrés', delai_45: '45 jours ouvrés',
+    duree_label: "Durée d'installation",
+    duree_34: '3-4 jours', duree_45: '4-5 jours', duree_57: '5-7 jours', duree_810: '8-10 jours',
+    date_debut: 'Date début installation souhaitée', date_fin: 'Date fin installation souhaitée',
+    validite_label: "Validité de l'offre",
+    c_commercial: 'Nom du commercial', c_commercial_ph: 'Prénom Nom',
+    sign_date: 'Date de signature', sign_date_hide: 'Ne pas indiquer la date',
+    sign_label: 'Signature du commercial',
+    sign_zone_p: '✍️ Cliquez pour uploader une signature<br><small>ou <strong>Ctrl+V</strong> après avoir cliqué ici</small>',
+    sign_del: '× Supprimer la signature',
+    sign_pasted: '✅ Signature collée<br><small>Ctrl+V pour changer</small>',
+    btn_pdf: '⬇ Générer le PDF officiel',
+    msg_generating: 'Génération du PDF…',
+    msg_success: '✅ PDF généré avec succès !',
+    msg_error_lib: 'Bibliothèque PDF non chargée.',
+    msg_error_prefix: 'Erreur : '
+  },
+  en: {
+    app_title: 'Commercial offer generator — SPI Global Play Retail',
+    app_sub: 'Fill in the fields · Click "Generate PDF" to get your official offer',
+    login_sub: 'Access reserved for authorized sales reps',
+    login_pwd_ph: 'Password', login_btn: 'Log in', login_err: 'Incorrect password.',
+    card_client: 'Client / Recipient', card_offer: 'Offer information',
+    card_photo: 'Product photo (optional)', card_price: 'Price table',
+    card_specs: 'Technical specifications', card_planning: 'Planning & Terms',
+    card_commercial: 'SPI Global Play Sales Rep',
+    c_brand: 'Restaurant name (brand)', c_lieu: 'Restaurant city',
+    r_pays: 'Country', c_groupe: 'Company name',
+    c_adresse: 'Company address (page 1 header)',
+    r_adresse: 'Restaurant address (page 2 + intro)',
+    c_contact: 'Contact person (optional)',
+    c_contact_ph: 'e.g. Ms. Smith, Mr. Jones…',
+    c_tva: 'Client VAT no.', c_franchise: 'Client project manager',
+    c_chef: 'Works supervisor', paiement_label: 'Payment terms',
+    paiement_50: '50% upon order + 50% upon completion',
+    paiement_45: '45 days end of month', paiement_30: '30 days from invoice date',
+    o_lieu: 'Place of issue', o_date: 'Date', o_projet: 'Project no.',
+    o_ref: 'Reference / Product type (offer title)',
+    aire_type_label: 'Playground type', aire_int: 'Indoor', aire_ext: 'Outdoor',
+    photo_zone_p: '🖼️ Click to upload a photo<br><small>or <strong>Ctrl+V</strong> to paste from clipboard</small>',
+    photo_del: '× Remove photo',
+    photo_pasted: '✅ Photo pasted<br><small>Ctrl+V to change</small>',
+    p_base: 'Base price of the playground (€ excl. VAT)',
+    p_inclus: 'Included in base price (comma-separated)',
+    opts_header: 'Additional options',
+    opt_th_opt: 'Option', opt_th_prix: 'Price excl. VAT (€)', opt_th_total: 'Total',
+    opt_lbl_ph: 'Indoor/outdoor lighting', opt_add_btn: '+ Add an option',
+    p_remarques: 'Note / free text (table page 1)',
+    remise_label: 'Commercial discount', remise_suffix: '€ excl. VAT discount',
+    sol_label: 'Include soft flooring in offer',
+    sol_inclus: 'Included', sol_prix_radio: 'Specify a price',
+    sol_prix_label: 'Soft flooring price (€ excl. VAT)',
+    insp_label: 'Include on-site inspection in offer',
+    t_base: 'Base price', t_opts: 'Options', t_sol: 'Soft flooring',
+    t_remise: 'Discount', t_total: 'TOTAL PRICE EXCL. VAT *',
+    dest_be: 'Belgium', dest_eu: 'European Union', dest_noneu: 'Outside EU',
+    dim: 'Dimensions (L x W x H mm)', capa: 'Capacity', age: 'Age range',
+    delai_label: 'Delivery lead time',
+    delai_30: '30 working days', delai_40: '40 working days', delai_45: '45 working days',
+    duree_label: 'Installation duration',
+    duree_34: '3-4 days', duree_45: '4-5 days', duree_57: '5-7 days', duree_810: '8-10 days',
+    date_debut: 'Desired installation start date', date_fin: 'Desired installation end date',
+    validite_label: 'Offer validity',
+    c_commercial: 'Sales rep name', c_commercial_ph: 'First name Last name',
+    sign_date: 'Signature date', sign_date_hide: 'Do not include the date',
+    sign_label: 'Sales rep signature',
+    sign_zone_p: '✍️ Click to upload a signature<br><small>or <strong>Ctrl+V</strong> after clicking here</small>',
+    sign_del: '× Remove signature',
+    sign_pasted: '✅ Signature pasted<br><small>Ctrl+V to change</small>',
+    btn_pdf: '⬇ Generate official PDF',
+    msg_generating: 'Generating PDF…',
+    msg_success: '✅ PDF generated successfully!',
+    msg_error_lib: 'PDF library not loaded.',
+    msg_error_prefix: 'Error: '
+  }
+};
+
+function setFormLang(lang) {
+  var FL = FORM_LANGS[lang] || FORM_LANGS.fr;
+  currentFormLang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(function(el) {
+    var k = el.getAttribute('data-i18n');
+    if (FL[k] !== undefined) el.textContent = FL[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+    var k = el.getAttribute('data-i18n-html');
+    if (FL[k] !== undefined) el.innerHTML = FL[k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(function(el) {
+    var k = el.getAttribute('data-i18n-ph');
+    if (FL[k] !== undefined) el.placeholder = FL[k];
+  });
+  document.getElementById('lang').value = lang;
+  document.documentElement.lang = lang;
+  document.querySelectorAll('.lang-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-lang') === lang);
+  });
+  document.querySelectorAll('#opts input[data-f="label"]').forEach(function(el) {
+    el.placeholder = FL.opt_lbl_ph;
+  });
+  updateDestNote();
+}
+function switchLang(lang) { setFormLang(lang); }
 
 // ── Traductions PDF ──
 var LANGS = {
@@ -1032,11 +1201,12 @@ var LANGS = {
 // ── Génération PDF ──
 document.getElementById('btnPDF').addEventListener('click', async function() {
   var msg=document.getElementById('msg');
-  msg.className='msg'; msg.textContent='Génération du PDF…';
+  var _FL=FORM_LANGS[currentFormLang]||FORM_LANGS.fr;
+  msg.className='msg'; msg.textContent=_FL.msg_generating||'Génération du PDF…';
   try {
     await document.fonts.load('60px DreamingOutloud');
     var jsPDF=window.jspdf?window.jspdf.jsPDF:null;
-    if(!jsPDF){msg.className='msg err';msg.textContent='Bibliothèque PDF non chargée.';return;}
+    if(!jsPDF){msg.className='msg err';msg.textContent=_FL.msg_error_lib||'Bibliothèque PDF non chargée.';return;}
 
     var doc=new jsPDF({unit:'mm',format:'a4'});
     var T=LANGS[g('lang')||'fr'];
@@ -1502,9 +1672,9 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var clientSlug=(g('c_nom')||'client').replace(/[^a-zA-Z0-9]/g,'_').replace(/_+/g,'_');
     var proj=g('o_projet')||'devis';
     doc.save('Offre_SPI_'+clientSlug+'_'+proj+'.pdf');
-    msg.className='msg'; msg.textContent='\u2705 PDF g\u00e9n\u00e9r\u00e9 avec succ\u00e8s !';
+    msg.className='msg'; msg.textContent=_FL.msg_success||'\u2705 PDF g\u00e9n\u00e9r\u00e9 avec succ\u00e8s !';
   } catch(e) {
-    msg.className='msg err'; msg.textContent='Erreur : '+e.message;
+    msg.className='msg err'; msg.textContent=(_FL.msg_error_prefix||'Erreur : ')+e.message;
     console.error(e);
   }
 });
@@ -1514,6 +1684,7 @@ var _today=new Date().toISOString().split('T')[0];
 document.getElementById('o_date').value=_today;
 document.getElementById('c_sign_date').value=_today;
 calcTotal();
+setFormLang('fr');
 </script>
 </body>
 </html>
