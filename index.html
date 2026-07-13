@@ -530,7 +530,7 @@ textarea{resize:vertical;min-height:52px}
         <option value="intérieure" data-i18n="aire_int">Intérieure</option>
         <option value="extérieure" selected data-i18n="aire_ext">Extérieure</option>
       </select></div>
-      <div class="field"><label data-i18n="lang_label">Langue du PDF</label><select id="lang">
+      <div class="field"><label data-i18n="lang_label">Langue du PDF</label><select id="lang" onchange="updateValiditeDefault()">
         <option value="fr">🇫🇷 Français</option>
         <option value="en">🇬🇧 English</option>
         <option value="nl">🇳🇱 Nederlands</option>
@@ -1161,12 +1161,16 @@ function setFormLang(lang) {
   document.querySelectorAll('#opts input[data-f="label"]').forEach(function(el) {
     el.placeholder = FL.opt_lbl_ph;
   });
-  var knownValidite = ['3 mois','3 months','3 maanden','3 Monate'];
-  var velEl = document.getElementById('validite');
-  if(velEl && knownValidite.indexOf(velEl.value.trim()) !== -1) velEl.value = FL.validite_default;
   updateDestNote();
 }
 function switchLang(lang) { setFormLang(lang); }
+var knownValidite = ['3 mois','3 months','3 maanden','3 Monate'];
+function updateValiditeDefault() {
+  var pdfLang = (document.getElementById('lang')||{}).value || 'fr';
+  var PL = LANGS[pdfLang] || LANGS.fr;
+  var velEl = document.getElementById('validite');
+  if(velEl && knownValidite.indexOf(velEl.value.trim()) !== -1) velEl.value = PL.validite_default;
+}
 
 // ── Traductions PDF ──
 var LANGS = {
@@ -1981,6 +1985,7 @@ document.getElementById('o_date').value=_today;
 document.getElementById('c_sign_date').value=_today;
 calcTotal();
 setFormLang('fr');
+updateValiditeDefault();
 </script>
 </body>
 </html>
