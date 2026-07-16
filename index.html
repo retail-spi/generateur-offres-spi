@@ -625,11 +625,15 @@ textarea{resize:vertical;min-height:52px}
   <div class="card">
     <div class="card-title" data-i18n="card_planning">Planning & Conditions</div>
     <div class="grid2">
-      <div class="field"><label data-i18n="delai_label">Délai de livraison</label><select id="delai">
+      <div class="field"><label data-i18n="delai_label">Délai de livraison</label><select id="delai" onchange="document.getElementById('delai_custom_wrap').style.display=this.value==='custom'?'block':'none'">
         <option value="à partir de 30 jours ouvrés" data-i18n="delai_30">30 jours ouvrés</option>
         <option value="à partir de 40 jours ouvrés" data-i18n="delai_40">40 jours ouvrés</option>
         <option value="à partir de 45 jours ouvrés" selected data-i18n="delai_45">45 jours ouvrés</option>
-      </select></div>
+        <option value="custom" data-i18n="delai_custom">Personnalisé…</option>
+      </select>
+      <div id="delai_custom_wrap" style="display:none;margin-top:5px">
+        <input id="delai_custom_val" data-i18n-ph="delai_custom_ph" placeholder="ex : à partir de 60 jours ouvrés"/>
+      </div></div>
       <div class="field"><label data-i18n="duree_label">Durée d'installation</label><select id="duree_install">
         <option value="3-4 jours" data-i18n="duree_34">3-4 jours</option>
         <option value="4-5 jours" data-i18n="duree_45">4-5 jours</option>
@@ -943,7 +947,7 @@ var FORM_LANGS = {
     dest_be: 'Belgique', dest_eu: 'Union Européenne', dest_noneu: 'Hors UE',
     dim: 'Dimensions (L x l x H mm)', capa: 'Capacité', age: "Tranche d'âge",
     delai_label: 'Délai de livraison',
-    delai_30: '30 jours ouvrés', delai_40: '40 jours ouvrés', delai_45: '45 jours ouvrés',
+    delai_30: '30 jours ouvrés', delai_40: '40 jours ouvrés', delai_45: '45 jours ouvrés', delai_custom: 'Personnalisé…', delai_custom_ph: 'ex : à partir de 60 jours ouvrés',
     duree_label: "Durée d'installation",
     duree_34: '3-4 jours', duree_45: '4-5 jours', duree_57: '5-7 jours', duree_810: '8-10 jours',
     date_debut: 'Date début installation souhaitée', date_fin: 'Date fin installation souhaitée',
@@ -1001,7 +1005,7 @@ var FORM_LANGS = {
     dest_be: 'Belgium', dest_eu: 'European Union', dest_noneu: 'Outside EU',
     dim: 'Dimensions (L x W x H mm)', capa: 'Capacity', age: 'Age range',
     delai_label: 'Delivery lead time',
-    delai_30: '30 working days', delai_40: '40 working days', delai_45: '45 working days',
+    delai_30: '30 working days', delai_40: '40 working days', delai_45: '45 working days', delai_custom: 'Custom…', delai_custom_ph: 'e.g. from 60 working days',
     duree_label: 'Installation duration',
     duree_34: '3-4 days', duree_45: '4-5 days', duree_57: '5-7 days', duree_810: '8-10 days',
     date_debut: 'Desired installation start date', date_fin: 'Desired installation end date',
@@ -1060,7 +1064,7 @@ var FORM_LANGS = {
     dest_be: 'België', dest_eu: 'Europese Unie', dest_noneu: 'Buiten EU',
     dim: 'Afmetingen (L x B x H mm)', capa: 'Capaciteit', age: 'Leeftijdsgroep',
     delai_label: 'Levertijd',
-    delai_30: '30 werkdagen', delai_40: '40 werkdagen', delai_45: '45 werkdagen',
+    delai_30: '30 werkdagen', delai_40: '40 werkdagen', delai_45: '45 werkdagen', delai_custom: 'Aangepast…', delai_custom_ph: 'bijv. vanaf 60 werkdagen',
     duree_label: 'Installatieduur',
     duree_34: '3-4 dagen', duree_45: '4-5 dagen', duree_57: '5-7 dagen', duree_810: '8-10 dagen',
     date_debut: 'Gewenste startdatum installatie', date_fin: 'Gewenste einddatum installatie',
@@ -1119,7 +1123,7 @@ var FORM_LANGS = {
     dest_be: 'Belgien', dest_eu: 'Europäische Union', dest_noneu: 'Außerhalb EU',
     dim: 'Abmessungen (L x B x H mm)', capa: 'Kapazität', age: 'Altersgruppe',
     delai_label: 'Lieferzeit',
-    delai_30: '30 Werktage', delai_40: '40 Werktage', delai_45: '45 Werktage',
+    delai_30: '30 Werktage', delai_40: '40 Werktage', delai_45: '45 Werktage', delai_custom: 'Benutzerdefiniert…', delai_custom_ph: 'z.B. ab 60 Werktagen',
     duree_label: 'Installationsdauer',
     duree_34: '3-4 Tage', duree_45: '4-5 Tage', duree_57: '5-7 Tage', duree_810: '8-10 Tage',
     date_debut: 'Gewünschter Installationsbeginn', date_fin: 'Gewünschtes Installationsende',
@@ -1354,7 +1358,7 @@ LANGS.nl = {
   note_noinsp: ' – Plaatsinspectie niet inbegrepen',
   livre_avec: 'Speeltuin geleverd met :',
   livraison_items: [
-    'Plannen met verschillende aanzichten en implantatie',
+    'Plannen met verschillende aanzichten en inplantingsplan',
     'Technische handleiding voor onderhoud en reiniging',
     'Conformiteitsattest afgeleverd door een erkend organisme'
   ],
@@ -1365,7 +1369,7 @@ LANGS.nl = {
   chef_projet: '•  Projectverantwoordelijke klant:',
   delai_titre: 'Levertijd :',
   delai_p1: 'Levertijd na ontvangst van deze ondertekende aanbieding, ',
-  delai_bold: 'implantatie goedgekeurd voor akkoord',
+  delai_bold: 'inplantingsplan goedgekeurd voor akkoord',
   delai_p3: 'en betaling van 50% bij bestelling: ',
   delai_default: 'vanaf 45 werkdagen',
   delai_map: {
@@ -1435,7 +1439,7 @@ LANGS.de = {
   note_noinsp: ' – Standortinspektion nicht inbegriffen',
   livre_avec: 'Spielplatz geliefert mit :',
   livraison_items: [
-    'Pläne mit verschiedenen Ansichten und Implantation',
+    'Pläne mit verschiedenen Ansichten und Lageplan',
     'Technisches Handbuch für Wartung und Reinigung',
     'Konformitätsbescheinigung einer anerkannten Prüfstelle'
   ],
@@ -1446,7 +1450,7 @@ LANGS.de = {
   chef_projet: '•  Projektverantwortlicher Kunde:',
   delai_titre: 'Lieferzeit :',
   delai_p1: 'Lieferzeit nach Eingang dieses unterzeichneten Angebots, ',
-  delai_bold: 'Implantation für Einverständnis validiert',
+  delai_bold: 'Lageplan für Einverständnis validiert',
   delai_p3: 'und Zahlung von 50% bei Bestellung: ',
   delai_default: 'ab 45 Werktagen',
   delai_map: {
@@ -1874,7 +1878,7 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     doc.setFont('helvetica','bold');
     doc.text(T.delai_bold,ml+dP1W,y); y+=5.5;
     doc.setFont('helvetica','normal');
-    var delaiVal=T.delai_map[g('delai')]||g('delai')||T.delai_default;
+    var delaiVal=g('delai')==='custom'?(g('delai_custom_val')||T.delai_default):(T.delai_map[g('delai')]||g('delai')||T.delai_default);
     if(is5050){
       var dPart3=T.delai_p3;
       doc.text(dPart3,ml,y);
@@ -1904,6 +1908,16 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var pvL=doc.splitTextToSize(T.pv,cw);
     doc.text(pvL,ml,y); y+=pvL.length*5+3;
 
+    // Pré-calcul de la hauteur de la signature pour éviter tout chevauchement
+    var sigRX=ml+cw*0.52;
+    var sigMaxW=Math.min(sigRX-ml-4, 55);
+    var sigImgH=signDataURL?Math.round(sigMaxW/(signAR||3)):0;
+    doc.setFont('helvetica','normal'); doc.setFontSize(7); sc([120,120,120]);
+    var noteText2=T.note2;
+    var noteL=doc.splitTextToSize(noteText2,cw);
+    var noteBlockH=noteL.length*3+4;
+    var noteYstart=H-18-noteBlockH;
+
     doc.setFont('helvetica','bold'); doc.setFontSize(10.5); sc(GRIS);
     doc.text(T.validite_label+(g('validite')||T.validite_default),ml,y); y+=8;
 
@@ -1911,22 +1925,13 @@ document.getElementById('btnPDF').addEventListener('click', async function() {
     var engL=doc.splitTextToSize(T.engagement,cw);
     doc.text(engL,ml,y); y+=engL.length*5.5+8;
 
-    // Pré-calcul de la note pour réserver la place en bas
-    doc.setFont('helvetica','normal'); doc.setFontSize(7); sc([120,120,120]);
-    var noteText2=T.note2;
-    var noteL=doc.splitTextToSize(noteText2,cw);
-    var noteBlockH=noteL.length*3+4;
-    var noteYstart=H-18-noteBlockH;
-    // Bloc bas : 'Nous restons'(5) + espace(14) + signatures + marge
-    var sigMaxW=Math.min((sigRX||ml+cw*0.52)-ml-4, 55);
-    var sigImgH=signDataURL?Math.round(sigMaxW/(signAR||3)):0;
-    y=Math.min(y, noteYstart-(50+sigImgH));
+    // Math.max garantit que "nous restons" commence toujours sous le texte déjà dessiné
+    y=Math.max(y, noteYstart-(50+sigImgH));
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
     doc.text(T.nous_restons,ml,y); y+=14;
 
     // Signatures
     doc.setFont('helvetica','normal'); doc.setFontSize(10); sc(GRIS);
-    var sigRX=ml+cw*0.52;
     doc.text(T.spi_sig,ml,y); doc.text(T.pour_accord,sigRX,y); y+=6;
     var signDateHide=document.getElementById('sign_date_hide').checked;
     var signDateVal=(!signDateHide)?g('c_sign_date'):''; var signDateStr='';
